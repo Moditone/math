@@ -1,9 +1,10 @@
 //
-//  Access.hpp
-//  dsperados/math
+//  access.hpp
+//  Math
 //
-//  Created by Stijn Frishert on 16/05/2016.
-//  Copyright © 2016 Dsperados. All rights reserved.
+//  Created by Stijn Frishert (info@stijnfrishert.com) on 16/05/2016.
+//  Copyright © 2015-2016 Stijn Frishert. All rights reserved.
+//  Licensed under the BSD 3-clause license.
 //
 
 #ifndef DSPERADOS_MATH_ACCESS_HPP

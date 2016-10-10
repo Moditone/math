@@ -1,3 +1,12 @@
+//
+//  bezier.hpp
+//  Math
+//
+//  Created by Stijn Frishert (info@stijnfrishert.com) on 16/05/2016.
+//  Copyright © 2015-2016 Stijn Frishert. All rights reserved.
+//  Licensed under the BSD 3-clause license.
+//
+
 #ifndef DSPERADOS_MATH_BEZIER_HPP
 #define DSPERADOS_MATH_BEZIER_HPP
 

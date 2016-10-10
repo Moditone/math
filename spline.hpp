@@ -1,9 +1,10 @@
 //
-//  Spline.hpp
-//  dsperados/math
+//  spline.hpp
+//  Math
 //
-//  Created by Stijn Frishert on 04/02/16.
-//  Copyright © 2016 Dsperados. All rights reserved.
+//  Created by Stijn Frishert (info@stijnfrishert.com) on 17/05/2016.
+//  Copyright © 2015-2016 Stijn Frishert. All rights reserved.
+//  Licensed under the BSD 3-clause license.
 //
 
 #ifndef DSPERADOS_MATH_SPLINE_HPP
