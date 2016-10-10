@@ -9,7 +9,7 @@
 #ifndef DSPERADOS_MATH_SPLINE_HPP
 #define DSPERADOS_MATH_SPLINE_HPP
 
-#include <gsl/span.h>
+#include <gsl/span>
 #include <vector>
 
 namespace math
