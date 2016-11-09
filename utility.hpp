@@ -21,30 +21,27 @@ namespace math
 {
     //! Clamp a number within a given range
     /*! @throw std::invalid_argument if max < min */
-    template <class T, class U, class V>
-    inline static auto clamp(const T& value, const U& min, const V& max)
+    template <class T>
+    inline static std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> clamp(const T& value, const T& min, const T& max)
     {
         if (max < min)
             throw std::invalid_argument("max < min");
         
         return value < min ? min : max < value ? max : value;
     }
-    
-    //! Clamp a number within a given range (start end = 0)
-    /*! @throw std::invalid_argument if max < 0 */
-    template <class T, class U>
-    inline static std::common_type_t<T, U> clamp(const T& value, const U& max)
+
+    //! Clamp a number within a given range
+    /*! @throw std::invalid_argument if max < min */
+    template <class T>
+    inline static std::enable_if_t<std::is_unsigned<T>::value, T> clamp(T value, const T& min, const T& max)
     {
-        if (max < 0)
-            throw std::invalid_argument("max < 0");
-        
-        return value < 0 ? 0 : max < value ? max : value;
+        return clamp<typename std::make_signed<T>::type>(value, min, max);
     }
     
     //! Wrap a number within a given range
     /*! @throw std::invalid_argument if max <= min */
-    template <class T, class U, class V>
-    inline static auto wrap(T value, const U& min, const V& max)
+    template <class T>
+    inline static std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> wrap(T value, const T& min, const T& max)
     {
         if (max <= min)
             throw std::invalid_argument("max <= min");
@@ -56,6 +53,14 @@ namespace math
             value += (max - min);
         
         return value;
+    }
+
+    //! Wrap a number within a given range
+    /*! @throw std::invalid_argument if max <= min */
+    template <class T>
+    inline static std::enable_if_t<std::is_unsigned<T>::value, T> wrap(T value, const T& min, const T& max)
+    {
+        return wrap<typename std::make_signed<T>::type>(value, min, max);
     }
     
     //! Wrap a number within a given range, where min = 0
