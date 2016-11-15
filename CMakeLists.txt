@@ -5,7 +5,7 @@ project(math CXX)
 add_definitions(-std=c++1z -Wall)
 include_directories(/usr/local/include)
 
-set(HEADERS access.hpp bezier.hpp constants.hpp interpolation.hpp random.hpp sinusoid.hpp spline.hpp utility.hpp)
+set(HEADERS access.hpp bezier.hpp constants.hpp interpolation.hpp random.hpp sinusoid.hpp spline.hpp statistics.hpp utility.hpp)
 set(SOURCES bezier.cpp)
 
 add_library(math STATIC ${HEADERS} ${SOURCES})
