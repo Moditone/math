@@ -112,7 +112,7 @@ namespace math
             const auto x1 = access(begin, end, trunc, accessor);
             const auto x2 = access(begin, end, trunc + 1, accessor);
 
-            return interpolateNearest(x1, x2, fraction);
+            return interpolateNearest(fraction, x1, x2);
         }
     };
 
@@ -130,7 +130,7 @@ namespace math
             const auto x1 = access(begin, end, trunc, accessor);
             const auto x2 = access(begin, end, trunc + 1, accessor);
 
-            return interpolateLinear(x1, x2, fraction);
+            return interpolateLinear(fraction, x1, x2);
         }
     };
 
@@ -148,7 +148,7 @@ namespace math
             const auto x1 = access(begin, end, trunc, accessor);
             const auto x2 = access(begin, end, trunc + 1, accessor);
 
-            return interpolateCosine(x1, x2, fraction);
+            return interpolateCosine(fraction, x1, x2);
         }
     };
 
@@ -168,7 +168,7 @@ namespace math
             const auto x3 = access(begin, end, trunc + 1, accessor);
             const auto x4 = access(begin, end, trunc + 2, accessor);
 
-            return interpolateCubic(x1, x2, x3, x4, fraction);
+            return interpolateCubic(fraction, x1, x2, x3, x4);
         }
     };
 
@@ -188,7 +188,7 @@ namespace math
             const auto x3 = access(begin, end, trunc + 1, accessor);
             const auto x4 = access(begin, end, trunc + 2, accessor);
 
-            return interpolateCatmullRom(x1, x2, x3, x4, fraction);
+            return interpolateCatmullRom(fraction, x1, x2, x3, x4);
         }
     };
 
@@ -210,7 +210,7 @@ namespace math
             const auto x3 = access(begin, end, trunc + 1, accessor);
             const auto x4 = access(begin, end, trunc + 2, accessor);
 
-            return interpolateHermite(x1, x2, x3, x4, fraction, tension, bias);
+            return interpolateHermite(fraction, x1, x2, x3, x4, tension, bias);
         }
 
         double tension = 0;
@@ -233,7 +233,7 @@ namespace math
         if (max1 <= min1)
             throw std::invalid_argument("max1 <= min1");
 
-        return interpolateLinear(min2, max2, (value - min1) / static_cast<long double>(max1 - min1));
+        return interpolateLinear((value - min1) / static_cast<long double>(max1 - min1), min2, max2);
     }
 
     //! Scale a number from one range to another with a skew factor computed from a middle value
