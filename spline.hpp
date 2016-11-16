@@ -1,39 +1,41 @@
 //
-//  spline.hpp
-//  Math
+//  Spline.hpp
+//  dsperados/math
 //
-//  Created by Stijn Frishert (info@stijnfrishert.com) on 17/05/2016.
-//  Copyright © 2015-2016 Stijn Frishert. All rights reserved.
-//  Licensed under the BSD 3-clause license.
+//  Created by Stijn Frishert on 04/02/16.
+//  Copyright © 2016 Dsperados. All rights reserved.
 //
 
 #ifndef DSPERADOS_MATH_SPLINE_HPP
 #define DSPERADOS_MATH_SPLINE_HPP
 
-#include <gsl/span>
+#include <cmath>
+#include <cstddef>
 #include <vector>
+
+#include "analysis.hpp"
 
 namespace math
 {
     //! Cubic spline with control points
     /*! Utility class for generating cubic splines. One can add points along the spline, and then
-        retrieve interpolated values.
+     retrieve interpolated values.
      
-        @code{cpp}
-        CubicSpline spline;
+     @code{cpp}
+     CubicSpline spline;
      
-        spline.emplace(0, 1);
-        spline.emplace(1, 8);
-        spline.emplace(2, -3);
+     spline.emplace(0, 1);
+     spline.emplace(1, 8);
+     spline.emplace(2, -3);
      
-        cout << spline[1.124] << endl;
-        @endcode */
+     cout << spline[1.124] << endl;
+     @endcode */
     class CubicSpline
     {
     public:
         //! Add a point to the spline
         /*! Every time a point is added, the coefficients will be recalculated.
-            @warning If you'll add more than one point, use the version of emplace() taking spans */
+         @warning If you'll add more than one point, use the version of emplace() taking vectors */
         void emplace(float x, float y)
         {
             emplacePoint(x, y);
@@ -43,7 +45,7 @@ namespace math
         
         //! Emplace points and their values
         template <class U>
-        void emplace(gsl::span<const U> x, gsl::span<const float> y)
+        void emplace(const std::vector<U>& x, const std::vector<float>& y)
         {
             auto n = std::min(x.size(), y.size());
             for (auto i = 0; i < n; ++i)
@@ -53,10 +55,10 @@ namespace math
         }
         
         //! Emplace points and their values by index
-        /*! @param indices Indexes into the value span
-            @param values y-values, per 1 x */
+        /*! @param indices Indexes into the vector
+         @param values y-values, per 1 x */
         template <class U>
-        void emplaceByIndex(gsl::span<const U> indices, gsl::span<const float> values)
+        void emplaceByIndex(const std::vector<U>& indices, const std::vector<float>& values)
         {
             auto n = std::min(indices.size(), values.size());
             for (auto i = 0; i < n; ++i)
@@ -198,55 +200,27 @@ namespace math
         std::vector<float> mu;
         std::vector<float> z;
     };
-
-    //! Find the local minima of a signal
-    template <class T>
-    auto localMinima(gsl::span<const T> input)
-    {
-        std::vector<size_t> minima;
-        for (auto i = 1; i < input.size() - 1; ++i)
-        {
-            if (input[i - 1] > input[i] && input[i] <= input[i + 1])
-                minima.emplace_back(i);
-        }
-        
-        return minima;
-    }
-
-    //! Find the local maxima of a signal
-    template <class T>
-    auto localMaxima(gsl::span<const T> input)
-    {
-        std::vector<size_t> maxima;
-        for (auto i = 1; i < input.size() - 1; ++i)
-        {
-            if (input[i - 1] < input[i] && input[i] >= input[i + 1])
-                maxima.emplace_back(i);
-        }
-        
-        return maxima;
-    }
     
-    //! Generate the minima spline of a span
+    //! Generate the minima spline of a vector
     template <typename T>
-    inline static std::vector<T> minimaSpline(gsl::span<T> x)
+    inline static std::vector<T> minimaSpline(const std::vector<T>& x)
     {
         auto min = localMinima(x);
-
+        
         CubicSpline spline;
-        spline.emplaceByIndex(gsl::span<const size_t>(min), x);
+        spline.emplaceByIndex(min, x);
         
         return spline.span(0, x.size());
     }
     
-    //! Generate the maxima spline of a span
+    //! Generate the maxima spline of a vector
     template <typename T, long N>
-    inline static std::vector<T> maximaSpline(gsl::span<T> x)
+    inline static std::vector<T> maximaSpline(std::vector<T> x)
     {
         auto max = localMaxima(x);
-
+        
         CubicSpline spline;
-        spline.emplaceByIndex(gsl::span<const size_t>(max), x);
+        spline.emplaceByIndex(max, x);
         
         return spline.span(0, x.size());
     }
