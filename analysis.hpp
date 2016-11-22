@@ -12,33 +12,66 @@
 
 #include <cmath>
 #include <cstddef>
+#include <iterator>
 #include <vector>
 
 namespace math
 {
     //! Find the local minima of a signal
-    template <class T>
-    inline static auto localMinima(const std::vector<T>& input)
+    template <class Iterator>
+    inline static std::vector<size_t> findLocalMinimaPositions(Iterator begin, Iterator end)
     {
+        // If we only received two points or less, there is no minimum
+        const auto d = std::distance(begin, end);
+        if (d < 3)
+            return {};
+        
+        // Store three iterators for the previous, current and next sample
+        auto p = begin;
+        auto c = std::next(p);
+        auto n = std::next(c);
+        
+        // Loop through the range, storing the position of each minimum
         std::vector<size_t> minima;
-        for (auto i = 1; i < input.size() - 1; ++i)
+        for (size_t pos = 1; c != end; ++pos)
         {
-            if (input[i - 1] > input[i] && input[i] <= input[i + 1])
-                minima.emplace_back(i);
+            // Is the previous sample bigger than the current, and the current smaller or equal than the next?
+            if (*p > *c && *c <= *n)
+                minima.emplace_back(pos);
+            
+            // Move the iterators forward
+            p = c;
+            c = n++;
         }
         
         return minima;
     }
     
-    //! Find the local maxima of a signal
-    template <class T>
-    inline static auto localMaxima(const std::vector<T>& input)
+    //! Find the local minima of a signal
+    template <class Iterator>
+    inline static std::vector<size_t> findLocalMaximaPositions(Iterator begin, Iterator end)
     {
+        // If we only received two points or less, there is no maximum
+        const auto d = std::distance(begin, end);
+        if (d < 3)
+            return {};
+        
+        // Store three iterators for the previous, current and next sample
+        auto p = begin;
+        auto c = std::next(p);
+        auto n = std::next(c);
+        
+        // Loop through the range, storing the position of each maximum
         std::vector<size_t> maxima;
-        for (auto i = 1; i < input.size() - 1; ++i)
+        for (size_t pos = 1; c != end; ++pos)
         {
-            if (input[i - 1] < input[i] && input[i] >= input[i + 1])
-                maxima.emplace_back(i);
+            // Is the previous sample smaller than the current, and the current bigger or equal than the next?
+            if (*p < *c && *c >= *n)
+                maxima.emplace_back(pos);
+            
+            // Move the iterators forward
+            p = c;
+            c = n++;
         }
         
         return maxima;
