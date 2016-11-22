@@ -17,6 +17,42 @@
 
 namespace math
 {
+    //! Find the maximum peak of a signal
+    template <class Iterator>
+    inline static auto maximumPeak(Iterator begin, Iterator end)
+    {
+        auto peak = std::numeric_limits<typename Iterator::value_type>::min();
+        for (auto it = begin; it != end; ++it)
+            if (*it > peak)
+                peak = *it;
+        
+        return peak;
+    }
+    
+    //! Find the minimum peak of a signal
+    template <class Iterator>
+    inline static auto minimumPeak(Iterator begin, Iterator end)
+    {
+        auto peak = std::numeric_limits<typename Iterator::value_type>::max();
+        for (auto it = begin; it != end; ++it)
+            if (*it < peak)
+                peak = *it;
+        
+        return peak;
+    }
+    
+    //! Find the absolute peak of a signal
+    template <class Iterator>
+    inline static auto absolutePeak(Iterator begin, Iterator end)
+    {
+        auto peak = std::numeric_limits<typename Iterator::value_type>::min();
+        for (auto it = begin; it != end; ++it)
+            if (std::abs(*it) > peak)
+                peak = std::abs(*it);
+        
+        return peak;
+    }
+    
     //! Find the local minima of a signal
     template <class Iterator>
     inline static std::vector<size_t> findLocalMinimaPositions(Iterator begin, Iterator end)
