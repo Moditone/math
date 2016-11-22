@@ -58,7 +58,7 @@ namespace math
         template <class InputIterator, class Index>
         constexpr auto operator()(InputIterator begin, InputIterator end, Index index) const
         {
-            return *std::next(begin, clamp(index, std::distance(begin, end) - 1));
+            return *std::next(begin, clamp<std::ptrdiff_t>(index, 0, std::distance(begin, end) - 1));
         }
     };
     
