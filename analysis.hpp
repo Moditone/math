@@ -78,14 +78,25 @@ namespace math
     }
     
     //! Count the number of zero crossings in a span
-    template <class T>
-    inline static size_t zeroCrossings(const std::vector<T>& input)
+    template <class Iterator>
+    inline static size_t countZeroCrossings(Iterator begin, Iterator end)
     {
+        // If we only received one points or less, there can be no zero crossings
+        const auto d = std::distance(begin, end);
+        if (d < 2)
+            return 0;
+        
+        // Store two iterators
+        auto p = begin;
+        auto n = std::next(p);
+        
         size_t count = 0;
-        for (auto i = 1; i < input.size(); ++i)
+        while (n != end)
         {
-            if (std::signbit(input[i]) != std::signbit(input[i-1]))
+            if (std::signbit(*p) != std::signbit(*n))
                 ++count;
+            
+            p = n++;
         }
         
         return count;
