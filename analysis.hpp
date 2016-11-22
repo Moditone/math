@@ -17,45 +17,23 @@
 
 namespace math
 {
-    //! Find the maximum peak of a signal
-    template <class Iterator>
-    inline static auto maximumPeak(Iterator begin, Iterator end)
-    {
-        auto peak = std::numeric_limits<typename Iterator::value_type>::min();
-        for (auto it = begin; it != end; ++it)
-            if (*it > peak)
-                peak = *it;
-        
-        return peak;
-    }
-    
-    //! Find the minimum peak of a signal
-    template <class Iterator>
-    inline static auto minimumPeak(Iterator begin, Iterator end)
-    {
-        auto peak = std::numeric_limits<typename Iterator::value_type>::max();
-        for (auto it = begin; it != end; ++it)
-            if (*it < peak)
-                peak = *it;
-        
-        return peak;
-    }
-    
     //! Find the absolute peak of a signal
     template <class Iterator>
-    inline static auto absolutePeak(Iterator begin, Iterator end)
+    Iterator findAbsolutePeak(Iterator begin, Iterator end)
     {
-        auto peak = std::numeric_limits<typename Iterator::value_type>::min();
-        for (auto it = begin; it != end; ++it)
-            if (std::abs(*it) > peak)
-                peak = std::abs(*it);
-        
-        return peak;
+        auto range = std::minmax_element(begin, end);
+        const auto min = std::abs(*range.first);
+        if (min == *range.second)
+            return std::min(range.first, range.second);
+        else if (min < *range.second)
+            return range.second;
+        else
+            return range.first;
     }
     
     //! Find the local minima of a signal
     template <class Iterator>
-    inline static std::vector<size_t> findLocalMinimaPositions(Iterator begin, Iterator end)
+    std::vector<size_t> findLocalMinimaPositions(Iterator begin, Iterator end)
     {
         // If we only received two points or less, there is no minimum
         const auto d = std::distance(begin, end);
@@ -85,7 +63,7 @@ namespace math
     
     //! Find the local minima of a signal
     template <class Iterator>
-    inline static std::vector<size_t> findLocalMaximaPositions(Iterator begin, Iterator end)
+    std::vector<size_t> findLocalMaximaPositions(Iterator begin, Iterator end)
     {
         // If we only received two points or less, there is no maximum
         const auto d = std::distance(begin, end);
@@ -115,7 +93,7 @@ namespace math
     
     //! Count the number of zero crossings in a span
     template <class Iterator>
-    inline static size_t countZeroCrossings(Iterator begin, Iterator end)
+    size_t countZeroCrossings(Iterator begin, Iterator end)
     {
         // If we only received one points or less, there can be no zero crossings
         const auto d = std::distance(begin, end);
