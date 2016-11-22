@@ -18,9 +18,6 @@
 
 namespace math
 {
-    template <class InputIterator, class OutputIterator>
-    void interleave(InputIterator inBegin1)
-    
     //! Interleave two vectors
     template <class T1, class T2, class T3>
     void interleave(const std::vector<T1>& lhs, const std::vector<T2>& rhs, std::vector<T3>& out)
