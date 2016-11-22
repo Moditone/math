@@ -13,71 +13,31 @@
 #include <cmath>
 #include <complex>
 #include <cstddef>
+#include <iterator>
 #include <vector>
-
 
 namespace math
 {
-    //! Interleave two vectors
-    template <class T1, class T2, class T3>
-    void interleave(const std::vector<T1>& lhs, const std::vector<T2>& rhs, std::vector<T3>& out)
+    //! Interleave two ranges
+    template <class InputIt1, class InputIt2, class OutputIt>
+    void interleave(InputIt1 inBegin1, InputIt1 inEnd, InputIt2 inBegin2, OutputIt outBegin)
     {
-        const auto n = std::min({lhs.size(), rhs.size(), out.size() / 2});
-        
-        for (auto i = 0; i < n; ++i)
+        for (auto it = inBegin1; it != inEnd; ++it)
         {
-            out[i * 2] = lhs[i];
-            out[i * 2 + 1] = rhs[i];
+            *outBegin++ = *it;
+            *outBegin++ = *inBegin2++;
         }
     }
     
-    template <class T1, class T2, class T3>
-    void interleave(const std::vector<T1>& lhs, const std::vector<T2>& rhs, std::vector<std::complex<T3>>& out)
+    //! Deinterleave a range into two ranges
+    template <class InputIt, class OutputIt1, class OutputIt2>
+    void deinterleave(InputIt inBegin, InputIt inEnd, OutputIt1 outBegin1, OutputIt2 outBegin2)
     {
-        std::vector<T3> fout(out.size() * 2);
-        interleave(lhs, rhs, fout);
-        
-        for (auto i = 0; i < out.size(); ++i)
+        for (auto it = inBegin; it != inEnd; ++it)
         {
-            out[i].real(fout[i * 2]);
-            out[i].imag(fout[i * 2 + 1]);
+            *outBegin1++ = *it++;
+            *outBegin2++ = *it;
         }
-    }
-    
-    //! Interleave two spans
-    template <class T1, class T2>
-    auto interleave(const std::vector<T1>& lhs, const std::vector<T2>& rhs)
-    {
-        using T3 = std::decay_t<std::common_type_t<T1, T2>>;
-        std::vector<T3> out(std::min(lhs.size(), rhs.size()) * 2);
-        interleave(lhs, rhs, out);
-        return out;
-    }
-    
-    //! Deinterleave a span
-    template <class T1, class T2, class T3>
-    void deinterleave(const std::vector<T1>& in, std::vector<T2>& lhs, std::vector<T3>& rhs)
-    {
-        const auto n = std::min({in.size() / 2, lhs.size(), rhs.size()});
-        
-        for (auto i = 0; i < n; ++i)
-        {
-            lhs[i] = in[i * 2];
-            rhs[i] = in[i * 2 + 1];
-        }
-    }
-    
-    template <class T1, class T2, class T3>
-    void deinterleave(const std::vector<std::complex<T1>>& in, std::vector<T2>& lhs, std::vector<T3>& rhs)
-    {
-        std::vector<float> fin(in.size() * 2);
-        for (auto i = 0; i < in.size(); ++i)
-        {
-            fin[i * 2] = in[i].real();
-            fin[i * 2 + 1] = in[i].imag();
-        }
-        
-        deinterleave(fin, lhs, rhs);
     }
 }
 
