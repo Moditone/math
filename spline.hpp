@@ -205,7 +205,7 @@ namespace math
     template <typename T>
     inline static std::vector<T> minimaSpline(const std::vector<T>& x)
     {
-        auto min = localMinima(x);
+        auto min = findLocalMinimaPositions(x.begin(), x.end());
         
         CubicSpline spline;
         spline.emplaceByIndex(min, x);
@@ -217,7 +217,7 @@ namespace math
     template <typename T, long N>
     inline static std::vector<T> maximaSpline(std::vector<T> x)
     {
-        auto max = localMaxima(x);
+        auto max = findLocalMaximaPositions(x.begin(), x.end());
         
         CubicSpline spline;
         spline.emplaceByIndex(max, x);
