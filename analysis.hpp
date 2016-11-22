@@ -10,6 +10,7 @@
 #ifndef DSPERADOS_MATH_ANALYSIS_HPP
 #define DSPERADOS_MATH_ANALYSIS_HPP
 
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <iterator>
