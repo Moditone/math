@@ -21,8 +21,8 @@ namespace math
     /*! Clamps index before accessing a range */
     struct ThrowAccess
     {
-        template <class InputIterator, class Index>
-        constexpr typename InputIterator::value_type operator()(InputIterator begin, InputIterator end, Index index) const
+        template <class InputIterator>
+        constexpr typename InputIterator::value_type operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
         {
             if (index < 0 || index >= std::distance(begin, end))
                 throw std::out_of_range("Accessing out of the iterator range");
@@ -38,8 +38,8 @@ namespace math
     {
         ConstantAccess(const T& value = T{}) : value(value) { }
         
-        template <class InputIterator, class Index>
-        constexpr typename InputIterator::value_type operator()(InputIterator begin, InputIterator end, Index index) const
+        template <class InputIterator>
+        constexpr typename InputIterator::value_type operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
         {
             if (index < 0 || index >= std::distance(begin, end))
                 return value;
@@ -55,8 +55,8 @@ namespace math
         @warning If begin == end, the result is undefined */
     struct ClampedAccess
     {
-        template <class InputIterator, class Index>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index) const
+        template <class InputIterator>
+        constexpr auto operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
         {
             return *std::next(begin, clamp(index, std::distance(begin, end) - 1));
         }
@@ -67,8 +67,8 @@ namespace math
         @warning If begin == end, the result is undefined */
     struct WrappedAccess
     {
-        template <class InputIterator, class Index>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index) const
+        template <class InputIterator>
+        constexpr auto operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
         {
             return *std::next(begin, wrap(index, std::distance(begin, end)));
         }
@@ -79,21 +79,21 @@ namespace math
         @warning If begin == end, the result is undefined */
     struct MirroredAccess
     {
-        template <class InputIterator, class Index>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index) const
+        template <class InputIterator>
+        constexpr auto operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
         {
             std::ptrdiff_t size = std::distance(begin, end);
             
             while (index < 0 || index >= size)
-                index = (index < 0) ? -index : static_cast<Index>(2 * size - index - 2);
+                index = (index < 0) ? -index : static_cast<std::ptrdiff_t>(2 * size - index - 2);
             
             return *std::next(begin, index);
         }
     };
     
     //! Access element in a range, taking an accessor for out-of-range handling
-    template <class InputIterator, class Index, class Accessor = ThrowAccess>
-    auto access(InputIterator begin, InputIterator end, Index index, Accessor accessor = Accessor())
+    template <class InputIterator, class Accessor = ThrowAccess>
+    auto access(InputIterator begin, InputIterator end, std::ptrdiff_t index, Accessor accessor = Accessor())
     {
         return accessor(begin, end, index);
     }
