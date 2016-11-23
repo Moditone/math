@@ -32,6 +32,17 @@ namespace math
     {
         return x1 + index * (x2 - x1);
     }
+    
+    //! Implementation of linear interpolation for complex numbers
+    /*! Why? Because the standard doesn't get its shit straight with complex operator overloading */
+    template <class T, class Index>
+    constexpr auto interpolateLinear(Index index, const std::complex<T>& x1, const std::complex<T>& x2)
+    {
+        const auto real = interpolateLinear(index, x1.real(), x2.real());
+        const auto imaginary = interpolateLinear(index, x1.imag(), x2.imag());
+        
+        return std::complex<decltype(real)>(real, imaginary);
+    }
 
     //! Interpolate between two numbers using cosine interpolation
     template <class T, class Index>

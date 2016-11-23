@@ -22,7 +22,7 @@ namespace math
     //! Clamp a number within a given range
     /*! @throw std::invalid_argument if max < min */
     template <class T>
-    inline static std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> clamp(const T& value, const T& min, const T& max)
+    std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> clamp(const T& value, const T& min, const T& max)
     {
         if (max < min)
             throw std::invalid_argument("max < min");
@@ -33,7 +33,7 @@ namespace math
     //! Clamp a number within a given range
     /*! @throw std::invalid_argument if max < min */
     template <class T>
-    inline static std::enable_if_t<std::is_unsigned<T>::value, T> clamp(T value, const T& min, const T& max)
+    std::enable_if_t<std::is_unsigned<T>::value, T> clamp(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
         return clamp<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
@@ -42,7 +42,7 @@ namespace math
     //! Wrap a number within a given range
     /*! @throw std::invalid_argument if max <= min */
     template <class T>
-    inline static std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> wrap(T value, const T& min, const T& max)
+    std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> wrap(T value, const T& min, const T& max)
     {
         if (max <= min)
             throw std::invalid_argument("max <= min");
@@ -59,7 +59,7 @@ namespace math
     //! Wrap a number within a given range
     /*! @throw std::invalid_argument if max <= min */
     template <class T>
-    inline static std::enable_if_t<std::is_unsigned<T>::value, T> wrap(T value, const T& min, const T& max)
+    std::enable_if_t<std::is_unsigned<T>::value, T> wrap(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
         return wrap<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
@@ -68,7 +68,7 @@ namespace math
     //! Wrap a number within a given range, where min = 0
     /*! @throw std::invalid_argument if max <= 0 */
     template <class T, class U>
-    inline static auto wrap(T value, const U& max)
+    auto wrap(T value, const U& max)
     {
         if (max <= 0)
             throw std::invalid_argument("max <= 0");
