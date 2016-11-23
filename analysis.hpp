@@ -18,9 +18,10 @@
 
 namespace math
 {
-    //! Find the absolute peak of a signal
+    //! Find the hightest minimum or maximum value
+    /*! In case of multiple extrema, return the first element */
     template <class Iterator>
-    Iterator findAbsolutePeak(Iterator begin, Iterator end)
+    Iterator findExtrema(Iterator begin, Iterator end)
     {
         auto range = std::minmax_element(begin, end);
         const auto min = std::abs(*range.first);
