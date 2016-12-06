@@ -2,8 +2,7 @@
 //  interpolation.hpp
 //  Math
 //
-//  Created by Stijn Frishert (info@stijnfrishert.com) on 16/05/2016.
-//  Copyright © 2015-2016 Stijn Frishert. All rights reserved.
+//  Copyright © 2015-2016 Dsperados (info@dsperados.com). All rights reserved.
 //  Licensed under the BSD 3-clause license.
 //
 
@@ -21,21 +20,21 @@ namespace math
 {
     //! Choose the nearest of two numbers
     template <class T, class Index>
-    constexpr auto interpolateNearest(const T& x1, const T& x2, Index index)
+    constexpr auto interpolateNearest(Index index, const T& x1, const T& x2)
     {
         return index < 0.5 ? x1 : x2;
     }
 
     //! Linearly interpolate between numbers
     template <class T, class Index>
-    constexpr auto interpolateLinear(const T& x1, const T& x2, Index index)
+    constexpr auto interpolateLinear(Index index, const T& x1, const T& x2)
     {
         return x1 + index * (x2 - x1);
     }
 
     //! Interpolate between two numbers using cosine interpolation
     template <class T, class Index>
-    constexpr auto interpolateCosine(const T& x1, const T& x2, Index index)
+    constexpr auto interpolateCosine(Index index, const T& x1, const T& x2)
     {
         auto t = (1 - cos(index * PI<double>)) / 2.0;
         return x1 + t * (x2 - x1);
@@ -43,7 +42,7 @@ namespace math
 
     //! Interpolate between two numbers using cubic interpolation
     template <class T, class Index>
-    constexpr auto interpolateCubic(const T& x1, const T& x2, const T& x3, const T& x4, Index index)
+    constexpr auto interpolateCubic(Index index, const T& x1, const T& x2, const T& x3, const T& x4)
     {
         const auto t = index * index;
         const auto a0 = x4 - x3 - x1 + x2;
@@ -56,7 +55,7 @@ namespace math
 
     //! Interpolate between two numbers using Catmull-Rom interpolation
     template <class T, class Index>
-    constexpr auto interpolateCatmullRom(const T& x1, const T& x2, const T& x3, const T& x4, Index index)
+    constexpr auto interpolateCatmullRom(Index index, const T& x1, const T& x2, const T& x3, const T& x4)
     {
         const auto t = index * index;
         const auto a0 = -0.5 * x1 + 1.5 * x2 - 1.5 * x3 + 0.5 * x4;
@@ -69,7 +68,7 @@ namespace math
 
     //! Interpolate between two numbers using hermite interpolation
     template <class T, class Index>
-    static inline auto interpolateHermite(const T& x1, const T& x2, const T& x3, const T& x4, Index index, double tension = 0, double bias = 0)
+    static inline auto interpolateHermite(Index index, const T& x1, const T& x2, const T& x3, const T& x4, double tension = 0, double bias = 0)
     {
         auto tension2 = (1 - tension) / 2.0;
 
@@ -84,7 +83,7 @@ namespace math
         auto a2 =      t2 -     t1;
         auto a3 = -2 * t2 + 3 * t1;
 
-        return(a0 * x2 + a1 * m0 + a2 * m1 + a3 * x3);
+        return (a0 * x2 + a1 * m0 + a2 * m1 + a3 * x3);
     }
 
     //! Interpolate a parabolic peak between three equidistant values
@@ -112,7 +111,7 @@ namespace math
             const auto x1 = access(begin, end, trunc, accessor);
             const auto x2 = access(begin, end, trunc + 1, accessor);
 
-            return interpolateNearest(x1, x2, fraction);
+            return interpolateNearest(fraction, x1, x2);
         }
     };
 
@@ -130,7 +129,7 @@ namespace math
             const auto x1 = access(begin, end, trunc, accessor);
             const auto x2 = access(begin, end, trunc + 1, accessor);
 
-            return interpolateLinear(x1, x2, fraction);
+            return interpolateLinear(fraction, x1, x2);
         }
     };
 
@@ -148,7 +147,7 @@ namespace math
             const auto x1 = access(begin, end, trunc, accessor);
             const auto x2 = access(begin, end, trunc + 1, accessor);
 
-            return interpolateCosine(x1, x2, fraction);
+            return interpolateCosine(fraction, x1, x2);
         }
     };
 
@@ -168,7 +167,7 @@ namespace math
             const auto x3 = access(begin, end, trunc + 1, accessor);
             const auto x4 = access(begin, end, trunc + 2, accessor);
 
-            return interpolateCubic(x1, x2, x3, x4, fraction);
+            return interpolateCubic(fraction, x1, x2, x3, x4);
         }
     };
 
@@ -188,7 +187,7 @@ namespace math
             const auto x3 = access(begin, end, trunc + 1, accessor);
             const auto x4 = access(begin, end, trunc + 2, accessor);
 
-            return interpolateCatmullRom(x1, x2, x3, x4, fraction);
+            return interpolateCatmullRom(fraction, x1, x2, x3, x4);
         }
     };
 
@@ -210,7 +209,7 @@ namespace math
             const auto x3 = access(begin, end, trunc + 1, accessor);
             const auto x4 = access(begin, end, trunc + 2, accessor);
 
-            return interpolateHermite(x1, x2, x3, x4, fraction, tension, bias);
+            return interpolateHermite(fraction, x1, x2, x3, x4, tension, bias);
         }
 
         double tension = 0;
@@ -228,18 +227,18 @@ namespace math
     //! Scale a number from one range to another
     /*! @throw std::invalid_argument if max1 <= min1 */
     template <class T1, class T2, class T3, class T4, class T5>
-    inline static auto scale(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
+    auto scale(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
     {
         if (max1 <= min1)
             throw std::invalid_argument("max1 <= min1");
 
-        return interpolateLinear(min2, max2, (value - min1) / static_cast<long double>(max1 - min1));
+        return interpolateLinear((value - min1) / static_cast<long double>(max1 - min1), min2, max2);
     }
 
     //! Scale a number from one range to another with a skew factor computed from a middle value
     /*! @throw std::invalid_argument if max1 <= min1 and if middle2 <= min2 or middle2 >= max2 */
     template <class T1, class T2, class T3, class T4, class T5, class T6>
-    inline static auto skew(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& middle2, const T6& max2)
+    auto skew(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& middle2, const T6& max2)
     {
         if (max1 <= min1)
             throw std::invalid_argument("max1 <= min1");
@@ -260,7 +259,7 @@ namespace math
     //! Convert from a linear to a logarithmic scale
     /*! @throw std::invalid_argument if min2 or max2 <= 0 */
     template <class T1, class T2, class T3, class T4, class T5>
-    inline static auto lin2log(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
+    auto lin2log(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
     {
         if (min2 <= 0)
             throw std::invalid_argument("min2 <= 0");
@@ -275,7 +274,7 @@ namespace math
     //! Convert from a logarithmic to a linear scale
     /*! @throw std::invalid_argument if value, min1 or max1 <= 0 */
     template <class T1, class T2, class T3, class T4, class T5>
-    inline static auto log2lin(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
+    auto log2lin(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
     {
         if (value <= 0)
             throw std::invalid_argument("value <= 0");

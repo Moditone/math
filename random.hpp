@@ -2,8 +2,7 @@
 //  random.hpp
 //  Math
 //
-//  Created by Stijn Frishert (info@stijnfrishert.com) on 17/05/2016.
-//  Copyright © 2015-2016 Stijn Frishert. All rights reserved.
+//  Copyright © 2015-2016 Dsperados (info@dsperados.com). All rights reserved.
 //  Licensed under the BSD 3-clause license.
 //
 
@@ -20,22 +19,22 @@
 namespace math
 {
     //! Generate a random integral uniform sample
-    template <class T, class Engine, class Min, class Max>
-    inline static std::enable_if_t<std::is_integral<T>::value, T> generateUniformRandom(const Min& a, const Max& b, Engine& engine)
+    template <typename T, typename Engine, typename Min, typename Max>
+    std::enable_if_t<std::is_integral<T>::value, T> generateUniformRandom(const Min& a, const Max& b, Engine& engine)
     {
         return std::uniform_int_distribution<T>(a, b)(engine);
     }
     
     //! Generate a random floating-point uniform sample
-    template <class T, class Engine, class Min, class Max>
-    inline static std::enable_if_t<std::is_floating_point<T>::value, T> generateUniformRandom(const Min& a, const Max& b, Engine& engine)
+    template <typename T, typename Engine, typename Min, typename Max>
+    std::enable_if_t<std::is_floating_point<T>::value, T> generateUniformRandom(const Min& a, const Max& b, Engine& engine)
     {
         return std::uniform_real_distribution<T>(a, b)(engine);
     }
     
     //! Generate a random uniform buffer
-    template <class T, class Engine, class Min, class Max>
-    inline static std::vector<T> generateUniformRandomBuffer(std::size_t size, const Min& a, const Max& b, Engine& engine)
+    template <typename T, typename Engine, typename Min, typename Max>
+    std::vector<T> generateUniformRandomBuffer(std::size_t size, const Min& a, const Max& b, Engine& engine)
     {
         std::vector<T> result(size);
         std::generate(result.begin(), result.end(), [&]{ return generateUniformRandom<T>(a, b, engine); });

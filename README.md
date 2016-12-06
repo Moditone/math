@@ -1,2 +1,3 @@
 # math
-Universal math library
+
+Dsperados' in-house math library
