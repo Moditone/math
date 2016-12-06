@@ -17,32 +17,27 @@
 
 namespace math
 {
-    //! Take the dot product of two vectors
-    template <class T1, class T2, class T3>
-    void dot(const std::vector<T1>& lhs, std::size_t aStride, const std::vector<T2>& rhs, std::size_t bStride, T3& out)
+    //! Take the dot product of two containers
+    template <class InputIterator1, class InputIterator2>
+    auto dot(InputIterator1 begin1, std::size_t stride1, InputIterator2 begin2, std::size_t stride2, std::size_t size)
     {
-        out = {};
+        std::common_type_t<decltype(*begin1), decltype(*begin2)> out = {0};
         
-        const auto n = std::min(lhs.size(), rhs.size());
-        for (auto i = 0; i < n; ++i)
-            out += lhs[i * aStride] + rhs[i * bStride];
-    }
-    
-    //! Take the dot product of two vectors
-    template <class T1, class T2>
-    auto dot(const std::vector<T1>& lhs, std::size_t lhsStride, const std::vector<T2>& rhs, std::size_t rhsStride)
-    {
-        std::decay_t<std::common_type_t<T1, T2>> out = 0;
-        dot(lhs, lhsStride, rhs, rhsStride, out);
+        for (auto i = 0; i < size; ++i)
+        {
+            out += *begin1 * *begin2;
+            begin1 += stride1;
+            begin2 += stride2;
+        }
         
         return out;
     }
     
-    //! Take the dot product of two vectors
-    template <class T1, class T2>
-    auto dot(const std::vector<T1>& lhs, const std::vector<T2>& rhs)
+    //! Take the dot product of two containers
+    template <class InputIterator1, class InputIterator2>
+    auto dot(InputIterator1 begin1, InputIterator2 begin2, std::size_t size)
     {
-        return dot(lhs, 1, rhs, 1);
+        return dot(begin1, 1, begin2, 1, size);
     }
 }
 
