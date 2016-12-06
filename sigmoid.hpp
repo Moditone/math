@@ -16,7 +16,7 @@ namespace math
 {
     //! Normalized sigmoid function
     template <typename T>
-    static inline T sigmoid(const T& x, double negativeFactor, double positiveFactor)
+    T sigmoid(const T& x, double negativeFactor, double positiveFactor)
     {
         if (negativeFactor <= 0 || positiveFactor <=0)
             throw std::runtime_error("Factor <= 0");
@@ -34,7 +34,7 @@ namespace math
     
     //! Normalized sigmoid function using tan
     template <typename T>
-    static inline T sigmoidTan(const T& x, double negativeFactor, double positiveFactor)
+    T sigmoidTan(const T& x, double negativeFactor, double positiveFactor)
     {
         if (negativeFactor <= 0 || positiveFactor <=0)
             throw std::runtime_error("Factor <= 0");

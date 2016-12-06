@@ -95,7 +95,7 @@ namespace math
         }
         
         // Access a range of points on the spline
-        std::vector<float> span(ptrdiff_t offset, size_t length)
+        std::vector<float> span(std::ptrdiff_t offset, size_t length)
         {
             std::vector<float> out(length);
             
@@ -105,17 +105,11 @@ namespace math
             return out;
         }
         
-        //! Begin for ranged for-loops
-        inline auto begin() { return points.begin(); }
-        
-        //! Begin for ranged for-loops
-        inline auto begin() const { return points.begin(); }
-        
-        //! End for ranged for-loops
-        inline auto end() { return points.end(); }
-        
-        //! End for ranged for-loops
-        inline auto end() const { return points.end(); }
+        // Return iterators for ranged for-loops
+        auto begin() { return points.begin(); }
+        auto begin() const { return points.begin(); }
+        auto end() { return points.end(); }
+        auto end() const { return points.end(); }
         
     private:
         //! A point in the spline

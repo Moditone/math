@@ -20,7 +20,7 @@ namespace math
 {
     //! Clamp a number within a given range
     /*! @throw std::invalid_argument if max < min */
-    template <class T>
+    template <typename T>
     std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> clamp(const T& value, const T& min, const T& max)
     {
         if (max < min)
@@ -31,7 +31,7 @@ namespace math
 
     //! Clamp a number within a given range
     /*! @throw std::invalid_argument if max < min */
-    template <class T>
+    template <typename T>
     std::enable_if_t<std::is_unsigned<T>::value, T> clamp(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
@@ -40,7 +40,7 @@ namespace math
     
     //! Wrap a number within a given range
     /*! @throw std::invalid_argument if max <= min */
-    template <class T>
+    template <typename T>
     std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> wrap(T value, const T& min, const T& max)
     {
         if (max <= min)
@@ -57,7 +57,7 @@ namespace math
 
     //! Wrap a number within a given range
     /*! @throw std::invalid_argument if max <= min */
-    template <class T>
+    template <typename T>
     std::enable_if_t<std::is_unsigned<T>::value, T> wrap(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
@@ -66,7 +66,7 @@ namespace math
     
     //! Wrap a number within a given range, where min = 0
     /*! @throw std::invalid_argument if max <= 0 */
-    template <class T, class U>
+    template <typename T, typename U>
     auto wrap(T value, const U& max)
     {
         if (max <= 0)

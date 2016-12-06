@@ -10,6 +10,7 @@
 #define MATH_NORMALIZE_HPP
 
 #include <algorithm>
+#include <cmath>
 #include <numeric>
 #include <stdexcept>
 
@@ -18,7 +19,7 @@
 namespace math
 {
     //! Normalize an area so the integral of the signal equals one
-    template <class InputIterator, class OutputIterator>
+    template <typename InputIterator, typename OutputIterator>
     void normalizeArea(InputIterator inBegin, InputIterator inEnd, OutputIterator outBegin)
     {
         auto integral = std::accumulate(inBegin, inEnd, typename InputIterator::value_type{0});
@@ -30,11 +31,11 @@ namespace math
     }
     
     //! Normalize a range
-    template <class InputIterator, class OutputIterator>
+    template <typename InputIterator, typename OutputIterator>
     void normalize(InputIterator inBegin, InputIterator inEnd, OutputIterator outBegin)
     {
-        auto absoluteExtrema = std::abs(*findExtrema(inBegin, inEnd));
-        auto factor = 1.l / absoluteExtrema;
+        const auto absoluteExtrema = std::abs(*findExtrema(inBegin, inEnd));
+        const auto factor = 1.0 / absoluteExtrema;
         std::transform(inBegin, inEnd, outBegin, [&](const auto& x){ return x * factor; });
     }
 }

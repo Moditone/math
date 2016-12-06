@@ -19,7 +19,7 @@ namespace math
 {
     //! Find the hightest minimum or maximum value
     /*! In case of multiple extrema, return the first element */
-    template <class Iterator>
+    template <typename Iterator>
     Iterator findExtrema(Iterator begin, Iterator end)
     {
         auto range = std::minmax_element(begin, end);
@@ -33,7 +33,7 @@ namespace math
     }
     
     //! Find the local minima of a signal
-    template <class Iterator>
+    template <typename Iterator>
     std::vector<size_t> findLocalMinimaPositions(Iterator begin, Iterator end)
     {
         // If we only received two points or less, there is no minimum
@@ -63,7 +63,7 @@ namespace math
     }
     
     //! Find the local minima of a signal
-    template <class Iterator>
+    template <typename Iterator>
     std::vector<size_t> findLocalMaximaPositions(Iterator begin, Iterator end)
     {
         // If we only received two points or less, there is no maximum
@@ -92,8 +92,8 @@ namespace math
         return maxima;
     }
     
-    //! Count the number of zero crossings in a span
-    template <class Iterator>
+    //! Count the number of zero crossings in a container
+    template <typename Iterator>
     size_t countZeroCrossings(Iterator begin, Iterator end)
     {
         // If we only received one points or less, there can be no zero crossings
