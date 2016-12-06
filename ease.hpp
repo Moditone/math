@@ -1,9 +1,9 @@
 //
 //  ease.hpp
-//  math
+//  Math
 //
-//  Created by Stijn Frishert on 15/11/16.
-//
+//  Copyright © 2015-2016 Dsperados (info@dsperados.com). All rights reserved.
+//  Licensed under the BSD 3-clause license.
 //
 
 #ifndef MATH_EASE_HPP

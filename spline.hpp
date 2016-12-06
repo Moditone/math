@@ -1,9 +1,9 @@
 //
 //  Spline.hpp
-//  dsperados/math
+//  Math
 //
-//  Created by Stijn Frishert on 04/02/16.
-//  Copyright © 2016 Dsperados. All rights reserved.
+//  Copyright © 2015-2016 Dsperados (info@dsperados.com). All rights reserved.
+//  Licensed under the BSD 3-clause license.
 //
 
 #ifndef DSPERADOS_MATH_SPLINE_HPP
@@ -19,17 +19,17 @@ namespace math
 {
     //! Cubic spline with control points
     /*! Utility class for generating cubic splines. One can add points along the spline, and then
-     retrieve interpolated values.
+        retrieve interpolated values.
      
-     @code{cpp}
-     CubicSpline spline;
+        @code{cpp}
+        CubicSpline spline;
      
-     spline.emplace(0, 1);
-     spline.emplace(1, 8);
-     spline.emplace(2, -3);
+        spline.emplace(0, 1);
+        spline.emplace(1, 8);
+        spline.emplace(2, -3);
      
-     cout << spline[1.124] << endl;
-     @endcode */
+        cout << spline[1.124] << endl;
+        @endcode */
     class CubicSpline
     {
     public:

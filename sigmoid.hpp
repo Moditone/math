@@ -1,13 +1,13 @@
 //
-//  WaveShaper.hpp
-//  bear-dsp
+//  Sigmoid.hpp
+//  Math
 //
-//  Created by Milan van der Meer on 14/07/16.
-//  Copyright © 2016 Dsperados. All rights reserved.
+//  Copyright © 2015-2016 Dsperados (info@dsperados.com). All rights reserved.
+//  Licensed under the BSD 3-clause license.
 //
 
-#ifndef GRIZZLY_WAVESHAPER_HPP
-#define GRIZZLY_WAVESHAPER_HPP
+#ifndef DSPERADOS_MATH_SIGMOID_HPP
+#define DSPERADOS_MATH_SIGMOID_HPP
 
 #include <cmath>
 #include <stdexcept>
@@ -63,4 +63,4 @@ namespace math
     }
 }
 
-#endif /* GRIZZLY_WAVESHAPER_HPP */
+#endif /* DSPERADOS_MATH_SIGMOID_HPP */
