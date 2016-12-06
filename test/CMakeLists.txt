@@ -8,6 +8,7 @@ include_directories(/usr/local/include)
 set(SOURCES
     main.cpp
     normalize.cpp
+    sigmoid.cpp
     )
 
 add_executable(math-test ${SOURCES})
