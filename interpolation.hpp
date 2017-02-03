@@ -19,21 +19,21 @@
 namespace math
 {
     //! Choose the nearest of two numbers
-    template <class T, class Index>
+    template <typename T, typename Index>
     constexpr auto interpolateNearest(Index index, const T& x1, const T& x2)
     {
         return index < 0.5 ? x1 : x2;
     }
 
     //! Linearly interpolate between numbers
-    template <class T, class Index>
+    template <typename T, typename Index>
     constexpr auto interpolateLinear(Index index, const T& x1, const T& x2)
     {
         return x1 + index * (x2 - x1);
     }
 
     //! Interpolate between two numbers using cosine interpolation
-    template <class T, class Index>
+    template <typename T, typename Index>
     constexpr auto interpolateCosine(Index index, const T& x1, const T& x2)
     {
         auto t = (1 - cos(index * PI<double>)) / 2.0;
@@ -41,7 +41,7 @@ namespace math
     }
 
     //! Interpolate between two numbers using cubic interpolation
-    template <class T, class Index>
+    template <typename T, typename Index>
     constexpr auto interpolateCubic(Index index, const T& x1, const T& x2, const T& x3, const T& x4)
     {
         const auto t = index * index;
@@ -54,7 +54,7 @@ namespace math
     }
 
     //! Interpolate between two numbers using Catmull-Rom interpolation
-    template <class T, class Index>
+    template <typename T, typename Index>
     constexpr auto interpolateCatmullRom(Index index, const T& x1, const T& x2, const T& x3, const T& x4)
     {
         const auto t = index * index;
@@ -67,7 +67,7 @@ namespace math
     }
 
     //! Interpolate between two numbers using hermite interpolation
-    template <class T, class Index>
+    template <typename T, typename Index>
     static inline auto interpolateHermite(Index index, const T& x1, const T& x2, const T& x3, const T& x4, double tension = 0, double bias = 0)
     {
         auto tension2 = (1 - tension) / 2.0;
@@ -87,7 +87,7 @@ namespace math
     }
 
     //! Interpolate a parabolic peak between three equidistant values
-    template <class T>
+    template <typename T>
     constexpr std::pair<double, T> interpolateParabolic(const T& x1, const T& x2, const T& x3)
     {
         const auto d = x1 - x3;
@@ -96,137 +96,98 @@ namespace math
 
         return {offset, peak};
     }
-
-    //! Function object for linear interpolation
-    struct NearestInterpolation
+    
+    //! Lambda executing nearest interpolation
+    const auto nearestInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
-        static constexpr std::size_t size = 2;
-
-        template <class InputIterator, class Index, class Accessor>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
-        {
-            const std::ptrdiff_t trunc = std::floor(index);
-            const auto fraction = index - trunc;
-
-            const auto x1 = access(begin, end, trunc, accessor);
-            const auto x2 = access(begin, end, trunc + 1, accessor);
-
-            return interpolateNearest(fraction, x1, x2);
-        }
+        const std::ptrdiff_t trunc = std::floor(index);
+        const auto fraction = index - trunc;
+        
+        const auto x1 = access(begin, end, trunc, accessor);
+        const auto x2 = access(begin, end, trunc + 1, accessor);
+        
+        return interpolateNearest(fraction, x1, x2);
     };
-
-    //! Function object for linear interpolation
-    struct LinearInterpolation
+    
+    //! Lambda executing linear interpolation
+    const auto linearInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
-        static constexpr std::size_t size = 2;
-
-        template <class InputIterator, class Index, class Accessor>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
-        {
-            const std::ptrdiff_t trunc = std::floor(index);
-            const auto fraction = index - trunc;
-
-            const auto x1 = access(begin, end, trunc, accessor);
-            const auto x2 = access(begin, end, trunc + 1, accessor);
-
-            return interpolateLinear(fraction, x1, x2);
-        }
+        const std::ptrdiff_t trunc = std::floor(index);
+        const auto fraction = index - trunc;
+        
+        const auto x1 = access(begin, end, trunc, accessor);
+        const auto x2 = access(begin, end, trunc + 1, accessor);
+        
+        return interpolateLinear(fraction, x1, x2);
     };
-
-    //! Function object for cosine interpolation
-    struct CosineInterpolation
+    
+    //! Lambda executing cosine interpolation
+    const auto cosineInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
-        static constexpr std::size_t size = 2;
-
-        template <class InputIterator, class Index, class Accessor>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
-        {
-            const std::ptrdiff_t trunc = std::floor(index);
-            const auto fraction = index - trunc;
-
-            const auto x1 = access(begin, end, trunc, accessor);
-            const auto x2 = access(begin, end, trunc + 1, accessor);
-
-            return interpolateCosine(fraction, x1, x2);
-        }
+        const std::ptrdiff_t trunc = std::floor(index);
+        const auto fraction = index - trunc;
+        
+        const auto x1 = access(begin, end, trunc, accessor);
+        const auto x2 = access(begin, end, trunc + 1, accessor);
+        
+        return interpolateCosine(fraction, x1, x2);
     };
-
-    //! Function object for cubic interpolation
-    struct CubicInterpolation
+    
+    //! Lambda executing cosine interpolation
+    const auto cubicInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
-        static constexpr std::size_t size = 4;
-
-        template <class InputIterator, class Index, class Accessor>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
+        const std::ptrdiff_t trunc = std::floor(index);
+        const auto fraction = index - trunc;
+        
+        const auto x1 = access(begin, end, trunc - 1, accessor);
+        const auto x2 = access(begin, end, trunc, accessor);
+        const auto x3 = access(begin, end, trunc + 1, accessor);
+        const auto x4 = access(begin, end, trunc + 2, accessor);
+        
+        return interpolateCubic(fraction, x1, x2, x3, x4);
+    };
+    
+    //! Lambda executing cosine interpolation
+    const auto catmullRomInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    {
+        const std::ptrdiff_t trunc = std::floor(index);
+        const auto fraction = index - trunc;
+        
+        const auto x1 = access(begin, end, trunc - 1, accessor);
+        const auto x2 = access(begin, end, trunc, accessor);
+        const auto x3 = access(begin, end, trunc + 1, accessor);
+        const auto x4 = access(begin, end, trunc + 2, accessor);
+        
+        return interpolateCatmullRom(fraction, x1, x2, x3, x4);
+    };
+    
+    //! Generate a lambda executing hermite interpolation
+    auto hermiteInterpolation(double tension = 0, double bias = 0)
+    {
+        return [tension, bias](auto begin, auto end, auto index, auto accessor)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
-
+            
             const auto x1 = access(begin, end, trunc - 1, accessor);
             const auto x2 = access(begin, end, trunc, accessor);
             const auto x3 = access(begin, end, trunc + 1, accessor);
             const auto x4 = access(begin, end, trunc + 2, accessor);
-
-            return interpolateCubic(fraction, x1, x2, x3, x4);
-        }
-    };
-
-    //! Function object for Catmull-Rom interpolation
-    struct CatmullRomInterpolation
-    {
-        static constexpr std::size_t size = 4;
-
-        template <class InputIterator, class Index, class Accessor>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
-        {
-            const std::ptrdiff_t trunc = std::floor(index);
-            const auto fraction = index - trunc;
-
-            const auto x1 = access(begin, end, trunc - 1, accessor);
-            const auto x2 = access(begin, end, trunc, accessor);
-            const auto x3 = access(begin, end, trunc + 1, accessor);
-            const auto x4 = access(begin, end, trunc + 2, accessor);
-
+            
             return interpolateCatmullRom(fraction, x1, x2, x3, x4);
-        }
-    };
-
-    //! Function object for hermite interpolation
-    struct HermiteInterpolation
-    {
-        static constexpr std::size_t size = 4;
-
-        HermiteInterpolation(double tension = 0, double bias = 0) : tension(tension), bias(bias) { }
-
-        template <class InputIterator, class Index, class Accessor>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
-        {
-            const std::ptrdiff_t trunc = std::floor(index);
-            const auto fraction = index - trunc;
-
-            const auto x1 = access(begin, end, trunc - 1, accessor);
-            const auto x2 = access(begin, end, trunc, accessor);
-            const auto x3 = access(begin, end, trunc + 1, accessor);
-            const auto x4 = access(begin, end, trunc + 2, accessor);
-
-            return interpolateHermite(fraction, x1, x2, x3, x4, tension, bias);
-        }
-
-        double tension = 0;
-        double bias = 0;
-    };
+        };
+    }
 
     //! Access an interpolated sample in a range, taking an interpolator and accessor
-    template <class InputIterator, class Index, class Interpolator = LinearInterpolation, class Accessor>
-    auto interpolate(InputIterator begin, InputIterator end, Index index, Interpolator interpolator = Interpolator(), Accessor accessor = clampAccess)
+    template <typename Iterator, typename Index, class Interpolator, typename Accessor>
+    auto interpolate(Iterator begin, Iterator end, Index index, Interpolator interpolator, Accessor accessor)
     {
         return interpolator(begin, end, index, accessor);
     }
 
-
     //! Scale a number from one range to another
     /*! @throw std::invalid_argument if max1 <= min1 */
-    template <class T1, class T2, class T3, class T4, class T5>
+    template <typename T1, typename T2, typename T3, typename T4, typename T5>
     auto scale(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
     {
         if (max1 <= min1)
@@ -237,7 +198,7 @@ namespace math
 
     //! Scale a number from one range to another with a skew factor computed from a middle value
     /*! @throw std::invalid_argument if max1 <= min1 and if middle2 <= min2 or middle2 >= max2 */
-    template <class T1, class T2, class T3, class T4, class T5, class T6>
+    template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
     auto skew(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& middle2, const T6& max2)
     {
         if (max1 <= min1)
@@ -258,7 +219,7 @@ namespace math
 
     //! Convert from a linear to a logarithmic scale
     /*! @throw std::invalid_argument if min2 or max2 <= 0 */
-    template <class T1, class T2, class T3, class T4, class T5>
+    template <typename T1, typename T2, typename T3, typename T4, typename T5>
     auto lin2log(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
     {
         if (min2 <= 0)
@@ -273,7 +234,7 @@ namespace math
 
     //! Convert from a logarithmic to a linear scale
     /*! @throw std::invalid_argument if value, min1 or max1 <= 0 */
-    template <class T1, class T2, class T3, class T4, class T5>
+    template <typename T1, typename T2, typename T3, typename T4, typename T5>
     auto log2lin(const T1& value, const T2& min1, const T3& max1, const T4& min2, const T5& max2)
     {
         if (value <= 0)
