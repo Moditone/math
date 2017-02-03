@@ -102,8 +102,8 @@ namespace math
     {
         static constexpr std::size_t size = 2;
 
-        template <class InputIterator, class Index, class Accessor = ClampedAccess>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = Accessor())
+        template <class InputIterator, class Index, class Accessor>
+        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
@@ -120,8 +120,8 @@ namespace math
     {
         static constexpr std::size_t size = 2;
 
-        template <class InputIterator, class Index, class Accessor = ClampedAccess>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = Accessor())
+        template <class InputIterator, class Index, class Accessor>
+        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
@@ -138,8 +138,8 @@ namespace math
     {
         static constexpr std::size_t size = 2;
 
-        template <class InputIterator, class Index, class Accessor = ClampedAccess>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = Accessor())
+        template <class InputIterator, class Index, class Accessor>
+        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
@@ -156,8 +156,8 @@ namespace math
     {
         static constexpr std::size_t size = 4;
 
-        template <class InputIterator, class Index, class Accessor = ClampedAccess>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = Accessor())
+        template <class InputIterator, class Index, class Accessor>
+        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
@@ -176,8 +176,8 @@ namespace math
     {
         static constexpr std::size_t size = 4;
 
-        template <class InputIterator, class Index, class Accessor = ClampedAccess>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = Accessor())
+        template <class InputIterator, class Index, class Accessor>
+        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
@@ -198,8 +198,8 @@ namespace math
 
         HermiteInterpolation(double tension = 0, double bias = 0) : tension(tension), bias(bias) { }
 
-        template <class InputIterator, class Index, class Accessor = ClampedAccess>
-        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = Accessor())
+        template <class InputIterator, class Index, class Accessor>
+        constexpr auto operator()(InputIterator begin, InputIterator end, Index index, Accessor accessor = clampAccess)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
@@ -217,8 +217,8 @@ namespace math
     };
 
     //! Access an interpolated sample in a range, taking an interpolator and accessor
-    template <class InputIterator, class Index, class Interpolator = LinearInterpolation, class Accessor = ClampedAccess>
-    auto interpolate(InputIterator begin, InputIterator end, Index index, Interpolator interpolator = Interpolator(), Accessor accessor = Accessor())
+    template <class InputIterator, class Index, class Interpolator = LinearInterpolation, class Accessor>
+    auto interpolate(InputIterator begin, InputIterator end, Index index, Interpolator interpolator = Interpolator(), Accessor accessor = clampAccess)
     {
         return interpolator(begin, end, index, accessor);
     }

@@ -16,83 +16,54 @@
 
 namespace math
 {
-    //! Function object for clamped range access
-    /*! Clamps index before accessing a range */
-    struct ThrowAccess
+    //! Lambda throwing when accessing outside of range
+    const auto throwAccess = [](auto begin, auto end, std::ptrdiff_t index)
     {
-        template <class InputIterator>
-        constexpr typename InputIterator::value_type operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
+        if (index < 0 || index >= std::distance(begin, end))
+            throw std::out_of_range("accessing out of the iterator range");
+        
+        return *std::next(begin, index);
+    };
+    
+    //! Generates lamdba returning a constant value when accessing outside of a range
+    template <typename T>
+    auto constantAccess(const T& constant)
+    {
+        return [constant](auto begin, auto end, std::ptrdiff_t index) -> typename decltype(begin)::value_type
         {
             if (index < 0 || index >= std::distance(begin, end))
-                throw std::out_of_range("Accessing out of the iterator range");
+                return constant;
             
             return *std::next(begin, index);
-        }
+        };
+    }
+    
+    //! Lambda clamping index when accessing outside of range
+    const auto clampAccess = [](auto begin, auto end, std::ptrdiff_t index)
+    {
+        return *std::next(begin, clamp<std::ptrdiff_t>(index, 0, std::distance(begin, end) - 1));
     };
     
-    //! Function object for range access with a fixed constant out of range
-    /*! Returns a given fixed constant when accessing out of the iterator range */
-    template <class T>
-    struct ConstantAccess
+    //! Lambda wrapping index when accessing outside of range
+    const auto wrapAccess = [](auto begin, auto end, std::ptrdiff_t index)
     {
-        ConstantAccess(const T& value = T{}) : value(value) { }
+        return *std::next(begin, wrap<std::ptrdiff_t>(index, std::distance(begin, end)));
+    };
+    
+    //! Lambda mirroring index when accessing outside of range
+    const auto mirrorAccess = [](auto begin, auto end, std::ptrdiff_t index)
+    {
+        std::ptrdiff_t size = std::distance(begin, end);
         
-        template <class InputIterator>
-        constexpr typename InputIterator::value_type operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
-        {
-            if (index < 0 || index >= std::distance(begin, end))
-                return value;
-            
-            return *std::next(begin, index);
-        }
+        while (index < 0 || index >= size)
+            index = (index < 0) ? -index : static_cast<std::ptrdiff_t>(2 * size - index - 2);
         
-        T value;
-    };
-    
-    //! Function object for clamped range access
-    /*! Clamps index before accessing a range
-     @warning If begin == end, the result is undefined */
-    struct ClampedAccess
-    {
-        template <class InputIterator>
-        constexpr auto operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
-        {
-            return *std::next(begin, clamp<std::ptrdiff_t>(index, 0, std::distance(begin, end) - 1));
-        }
-    };
-    
-    //! Function object for wrapped range access
-    /*! Wraps index before accessing a range
-     @warning If begin == end, the result is undefined */
-    struct WrappedAccess
-    {
-        template <class InputIterator>
-        constexpr auto operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
-        {
-            return *std::next(begin, wrap<std::ptrdiff_t>(index, std::distance(begin, end)));
-        }
-    };
-    
-    //! Function object for mirrored range access
-    /*! Mirrors index before accessing a range
-     @warning If begin == end, the result is undefined */
-    struct MirroredAccess
-    {
-        template <class InputIterator>
-        constexpr auto operator()(InputIterator begin, InputIterator end, std::ptrdiff_t index) const
-        {
-            std::ptrdiff_t size = std::distance(begin, end);
-            
-            while (index < 0 || index >= size)
-                index = (index < 0) ? -index : static_cast<std::ptrdiff_t>(2 * size - index - 2);
-            
-            return *std::next(begin, index);
-        }
+        return *std::next(begin, index);
     };
     
     //! Access element in a range, taking an accessor for out-of-range handling
-    template <class InputIterator, class Accessor = ThrowAccess>
-    auto access(InputIterator begin, InputIterator end, std::ptrdiff_t index, Accessor accessor = Accessor())
+    template <typename InputIterator, typename Accessor>
+    auto access(InputIterator begin, InputIterator end, std::ptrdiff_t index, Accessor accessor)
     {
         return accessor(begin, end, index);
     }
