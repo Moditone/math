@@ -17,7 +17,7 @@
 namespace math
 {
     //! Lambda throwing when accessing outside of range
-    const auto throwAccess = [](auto begin, auto end, std::ptrdiff_t index)
+    static const auto throwAccess = [](auto begin, auto end, std::ptrdiff_t index)
     {
         if (index < 0 || index >= std::distance(begin, end))
             throw std::out_of_range("accessing out of the iterator range");
@@ -27,7 +27,7 @@ namespace math
     
     //! Generates lamdba returning a constant value when accessing outside of a range
     template <typename T>
-    auto constantAccess(const T& constant)
+    inline const auto constantAccess(const T& constant)
     {
         return [constant](auto begin, auto end, std::ptrdiff_t index) -> typename decltype(begin)::value_type
         {
@@ -39,19 +39,19 @@ namespace math
     }
     
     //! Lambda clamping index when accessing outside of range
-    const auto clampAccess = [](auto begin, auto end, std::ptrdiff_t index)
+    static const auto clampAccess = [](auto begin, auto end, std::ptrdiff_t index)
     {
         return *std::next(begin, clamp<std::ptrdiff_t>(index, 0, std::distance(begin, end) - 1));
     };
     
     //! Lambda wrapping index when accessing outside of range
-    const auto wrapAccess = [](auto begin, auto end, std::ptrdiff_t index)
+    static const auto wrapAccess = [](auto begin, auto end, std::ptrdiff_t index)
     {
         return *std::next(begin, wrap<std::ptrdiff_t>(index, std::distance(begin, end)));
     };
     
     //! Lambda mirroring index when accessing outside of range
-    const auto mirrorAccess = [](auto begin, auto end, std::ptrdiff_t index)
+    static const auto mirrorAccess = [](auto begin, auto end, std::ptrdiff_t index)
     {
         std::ptrdiff_t size = std::distance(begin, end);
         

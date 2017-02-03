@@ -98,7 +98,7 @@ namespace math
     }
     
     //! Lambda executing nearest interpolation
-    const auto nearestInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto nearestInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
@@ -110,7 +110,7 @@ namespace math
     };
     
     //! Lambda executing linear interpolation
-    const auto linearInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto linearInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
@@ -122,7 +122,7 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    const auto cosineInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto cosineInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
@@ -134,7 +134,7 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    const auto cubicInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto cubicInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
@@ -148,7 +148,7 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    const auto catmullRomInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto catmullRomInterpolation = [](auto begin, auto end, auto index, auto accessor)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
@@ -162,7 +162,7 @@ namespace math
     };
     
     //! Generate a lambda executing hermite interpolation
-    auto hermiteInterpolation(double tension = 0, double bias = 0)
+    inline auto hermiteInterpolation(double tension = 0, double bias = 0)
     {
         return [tension, bias](auto begin, auto end, auto index, auto accessor)
         {
