@@ -67,6 +67,10 @@ namespace math
     {
         return accessor(begin, end, index);
     }
+    
+    //! Functors for storing accessors
+    template <typename Iterator>
+    using AccessorFunction = std::function<decltype(*std::declval<Iterator>())(Iterator, Iterator, std::ptrdiff_t)>;
 }
 
 #endif

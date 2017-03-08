@@ -177,6 +177,10 @@ namespace math
             return interpolateCatmullRom(fraction, x1, x2, x3, x4);
         };
     }
+    
+    //! Functor for storing interpolations
+    template <typename Iterator>
+    using InterpolationFunction = std::function<decltype(*std::declval<Iterator>())(Iterator, Iterator, std::ptrdiff_t, AccessorFunction<Iterator>)>;
 
     //! Access an interpolated sample in a range, taking an interpolator and accessor
     template <typename Iterator, typename Index, class Interpolator, typename Accessor>
