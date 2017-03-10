@@ -9,6 +9,7 @@
 #ifndef DSPERADOS_MATH_ACCESS_HPP
 #define DSPERADOS_MATH_ACCESS_HPP
 
+#include <functional>
 #include <iterator>
 #include <stdexcept>
 

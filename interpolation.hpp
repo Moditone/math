@@ -10,6 +10,7 @@
 #define DSPERADOS_MATH_INTERPOLATION_HPP
 
 #include <cmath>
+#include <functional>
 #include <stdexcept>
 #include <utility>
 
