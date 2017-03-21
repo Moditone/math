@@ -17,3 +17,9 @@ install (FILES ${HEADERS} DESTINATION include/dsperados/math)
 # Create the target
 add_library(Math ${HEADERS} ${SOURCES})
 install(TARGETS Math DESTINATION lib)
+
+if (BUILD_SHARED_LIBS)
+	set_target_properties(Math PROPERTIES OUTPUT_NAME math)
+else (BUILD_SHARED_LIBS)
+	set_target_properties(Math PROPERTIES OUTPUT_NAME math_static)
+endif (BUILD_SHARED_LIBS)
