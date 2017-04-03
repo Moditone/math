@@ -90,7 +90,7 @@ namespace math
     
     //! Find the smallest power of 2 bigger than a given number
     /*! @return 1 for x == 0 */
-    constexpr size_t ceilToPowerOf2(size_t x)
+    size_t ceilToPowerOf2(size_t x)
     {
         size_t y = 1;
         while (y < x)
