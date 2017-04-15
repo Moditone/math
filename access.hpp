@@ -71,7 +71,7 @@ namespace math
     
     //! Functors for storing accessors
     template <typename Iterator>
-    using AccessorFunction = std::function<decltype(*std::declval<Iterator>())(Iterator, Iterator, std::ptrdiff_t)>;
+    using AccessorFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t)>;
 }
 
 #endif

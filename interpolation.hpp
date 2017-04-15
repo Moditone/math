@@ -181,7 +181,7 @@ namespace math
     
     //! Functor for storing interpolations
     template <typename Iterator>
-    using InterpolationFunction = std::function<decltype(*std::declval<Iterator>())(Iterator, Iterator, std::ptrdiff_t, AccessorFunction<Iterator>)>;
+    using InterpolationFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t, AccessorFunction<Iterator>)>;
     
     //! Access an interpolated sample in a range, taking an interpolator and accessor
     template <typename Iterator, typename Index, class Interpolator, typename Accessor>
