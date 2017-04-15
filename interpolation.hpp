@@ -12,6 +12,7 @@
 #include <cmath>
 #include <functional>
 #include <stdexcept>
+#include <type_traits>
 #include <utility>
 
 #include "access.hpp"
