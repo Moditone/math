@@ -9,6 +9,7 @@
 #ifndef DSPERADOS_MATH_ACCESS_HPP
 #define DSPERADOS_MATH_ACCESS_HPP
 
+#include <cstddef>
 #include <functional>
 #include <iterator>
 #include <stdexcept>
@@ -18,6 +19,12 @@
 
 namespace math
 {
+    //! Functors for storing accessors
+    template <typename Iterator>
+    using AccessorFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t)>;
+
+// --- Accessor lambda's --- //
+
     //! Lambda throwing when accessing outside of range
     static const auto throwAccess = [](auto begin, auto end, std::ptrdiff_t index)
     {
@@ -29,7 +36,7 @@ namespace math
     
     //! Generates lamdba returning a constant value when accessing outside of a range
     template <typename T>
-    inline const auto constantAccess(const T& constant)
+    const auto constantAccess(const T& constant)
     {
         return [constant](auto begin, auto end, std::ptrdiff_t index) -> typename decltype(begin)::value_type
         {
@@ -62,17 +69,6 @@ namespace math
         
         return *std::next(begin, index);
     };
-    
-    //! Access element in a range, taking an accessor for out-of-range handling
-    template <typename InputIterator, typename Accessor>
-    auto access(InputIterator begin, InputIterator end, std::ptrdiff_t index, Accessor accessor)
-    {
-        return accessor(begin, end, index);
-    }
-    
-    //! Functors for storing accessors
-    template <typename Iterator>
-    using AccessorFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t)>;
 }
 
 #endif

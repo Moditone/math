@@ -10,6 +10,7 @@
 #define DSPERADOS_MATH_INTERPOLATION_HPP
 
 #include <cmath>
+#include <cstddef>
 #include <functional>
 #include <stdexcept>
 #include <type_traits>
@@ -20,6 +21,12 @@
 
 namespace math
 {
+    //! Functor for storing interpolations
+    template <typename Iterator>
+    using InterpolationFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t, AccessorFunction<Iterator>)>;
+
+// --- Interpolation free functions --- //
+
     //! Choose the nearest of two numbers
     template <typename T, typename Index>
     constexpr auto interpolateNearest(Index index, const T& x1, const T& x2)
@@ -70,7 +77,7 @@ namespace math
     
     //! Interpolate between two numbers using hermite interpolation
     template <typename T, typename Index>
-    static inline auto interpolateHermite(Index index, const T& x1, const T& x2, const T& x3, const T& x4, double tension = 0, double bias = 0)
+    auto interpolateHermite(Index index, const T& x1, const T& x2, const T& x3, const T& x4, double tension = 0, double bias = 0)
     {
         auto tension2 = (1 - tension) / 2.0;
         
@@ -98,67 +105,69 @@ namespace math
         
         return {offset, peak};
     }
+
+// --- Interpolation lambda's --- //
     
     //! Lambda executing nearest interpolation
-    static const auto nearestInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto nearestInterpolation = [](auto begin, auto end, auto index, auto access)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
         
-        const auto x1 = access(begin, end, trunc, accessor);
-        const auto x2 = access(begin, end, trunc + 1, accessor);
+        const auto x1 = access(begin, end, trunc);
+        const auto x2 = access(begin, end, trunc + 1);
         
         return interpolateNearest(fraction, x1, x2);
     };
     
     //! Lambda executing linear interpolation
-    static const auto linearInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto linearInterpolation = [](auto begin, auto end, auto index, auto access)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
         
-        const auto x1 = access(begin, end, trunc, accessor);
-        const auto x2 = access(begin, end, trunc + 1, accessor);
+        const auto x1 = access(begin, end, trunc);
+        const auto x2 = access(begin, end, trunc + 1);
         
         return interpolateLinear(fraction, x1, x2);
     };
     
     //! Lambda executing cosine interpolation
-    static const auto cosineInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto cosineInterpolation = [](auto begin, auto end, auto index, auto access)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
         
-        const auto x1 = access(begin, end, trunc, accessor);
-        const auto x2 = access(begin, end, trunc + 1, accessor);
+        const auto x1 = access(begin, end, trunc);
+        const auto x2 = access(begin, end, trunc + 1);
         
         return interpolateCosine(fraction, x1, x2);
     };
     
     //! Lambda executing cosine interpolation
-    static const auto cubicInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto cubicInterpolation = [](auto begin, auto end, auto index, auto access)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
         
-        const auto x1 = access(begin, end, trunc - 1, accessor);
-        const auto x2 = access(begin, end, trunc, accessor);
-        const auto x3 = access(begin, end, trunc + 1, accessor);
-        const auto x4 = access(begin, end, trunc + 2, accessor);
+        const auto x1 = access(begin, end, trunc - 1);
+        const auto x2 = access(begin, end, trunc);
+        const auto x3 = access(begin, end, trunc + 1);
+        const auto x4 = access(begin, end, trunc + 2);
         
         return interpolateCubic(fraction, x1, x2, x3, x4);
     };
     
     //! Lambda executing cosine interpolation
-    static const auto catmullRomInterpolation = [](auto begin, auto end, auto index, auto accessor)
+    static const auto catmullRomInterpolation = [](auto begin, auto end, auto index, auto access)
     {
         const std::ptrdiff_t trunc = std::floor(index);
         const auto fraction = index - trunc;
         
-        const auto x1 = access(begin, end, trunc - 1, accessor);
-        const auto x2 = access(begin, end, trunc, accessor);
-        const auto x3 = access(begin, end, trunc + 1, accessor);
-        const auto x4 = access(begin, end, trunc + 2, accessor);
+        const auto x1 = access(begin, end, trunc - 1);
+        const auto x2 = access(begin, end, trunc);
+        const auto x3 = access(begin, end, trunc + 1);
+        const auto x4 = access(begin, end, trunc + 2);
         
         return interpolateCatmullRom(fraction, x1, x2, x3, x4);
     };
@@ -166,30 +175,21 @@ namespace math
     //! Generate a lambda executing hermite interpolation
     inline auto hermiteInterpolation(double tension = 0, double bias = 0)
     {
-        return [tension, bias](auto begin, auto end, auto index, auto accessor)
+        return [tension, bias](auto begin, auto end, auto index, auto access)
         {
             const std::ptrdiff_t trunc = std::floor(index);
             const auto fraction = index - trunc;
             
-            const auto x1 = access(begin, end, trunc - 1, accessor);
-            const auto x2 = access(begin, end, trunc, accessor);
-            const auto x3 = access(begin, end, trunc + 1, accessor);
-            const auto x4 = access(begin, end, trunc + 2, accessor);
+            const auto x1 = access(begin, end, trunc - 1);
+            const auto x2 = access(begin, end, trunc);
+            const auto x3 = access(begin, end, trunc + 1);
+            const auto x4 = access(begin, end, trunc + 2);
             
             return interpolateCatmullRom(fraction, x1, x2, x3, x4);
         };
     }
-    
-    //! Functor for storing interpolations
-    template <typename Iterator>
-    using InterpolationFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t, AccessorFunction<Iterator>)>;
-    
-    //! Access an interpolated sample in a range, taking an interpolator and accessor
-    template <typename Iterator, typename Index, class Interpolator, typename Accessor>
-    auto interpolate(Iterator begin, Iterator end, Index index, Interpolator interpolator, Accessor accessor)
-    {
-        return interpolator(begin, end, index, accessor);
-    }
+
+// --- Other functions using interpolation --- //
     
     //! Scale a number from one range to another
     /*! @throw std::invalid_argument if max1 <= min1 */
