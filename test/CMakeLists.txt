@@ -8,6 +8,7 @@ include_directories(/usr/local/include)
 set(SOURCES
 	access.cpp
     main.cpp
+    interleave.cpp
     interpolation.cpp
     normalize.cpp
     sigmoid.cpp

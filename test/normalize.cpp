@@ -14,17 +14,14 @@
 
 #include "../normalize.hpp"
 
-using namespace math;
-using namespace std;
-
 TEST_CASE("normalize")
 {
     SECTION("normalize()")
     {
         SECTION("negative")
         {
-            vector<float> x = {0.1, -0.5};
-            normalize(x.begin(), x.end(), x.begin());
+            std::vector<float> x = {0.1, -0.5};
+            math::normalize(x.begin(), x.end(), x.begin());
             
             SECTION("values in bounds")
             {
@@ -37,15 +34,15 @@ TEST_CASE("normalize")
             
             SECTION("peak equals -1")
             {
-                auto peak = *min_element(x.begin(), x.end());
+                auto peak = *std::min_element(x.begin(), x.end());
                 CHECK(peak == Approx(-1.f));
             }
         }
         
         SECTION("positive")
         {
-            vector<float> x = {-0.1, 0.5};
-            normalize(x.begin(), x.end(), x.begin());
+            std::vector<float> x = {-0.1, 0.5};
+            math::normalize(x.begin(), x.end(), x.begin());
             
             SECTION("values in bounds")
             {
@@ -58,7 +55,7 @@ TEST_CASE("normalize")
             
             SECTION("peak equals 1")
             {
-                auto peak = *max_element(x.begin(), x.end());
+                auto peak = *std::max_element(x.begin(), x.end());
                 CHECK(std::abs(peak) == Approx(1.f));
             }
         }
@@ -68,18 +65,18 @@ TEST_CASE("normalize")
     {
         SECTION("Area equal to one")
         {
-            vector<float> x{0,5, 1, 0,5};
-            normalizeArea(x.begin(), x.end(), x.begin());
+            std::vector<float> x{0,5, 1, 0,5};
+            math::normalizeArea(x.begin(), x.end(), x.begin());
             
-            auto sum = accumulate(x.begin(), x.end(), 0.f);
+            auto sum = std::accumulate(x.begin(), x.end(), 0.f);
             
             CHECK(sum == Approx(1.f));
         }
         
         SECTION("Throw when input has integral of zero")
         {
-            vector<float> x{1, -1};
-            CHECK_THROWS_AS(normalizeArea(x.begin(), x.end(), x.begin()), std::runtime_error);
+            std::vector<float> x{1, -1};
+            CHECK_THROWS_AS(math::normalizeArea(x.begin(), x.end(), x.begin()), std::runtime_error);
         }
     }
     

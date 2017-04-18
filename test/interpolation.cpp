@@ -12,36 +12,33 @@
 
 #include "../interpolation.hpp"
 
-using namespace math;
-using namespace std;
-
 TEST_CASE("Interpolation")
 {
     SECTION("Free functions")
     {
-        REQUIRE(interpolateNearest(0.25, 4, 6) == Approx(4));
-        REQUIRE(interpolateLinear(0.25, 4, 6) == Approx(4.5));
-        REQUIRE(interpolateCosine(0.25, 4, 6) == Approx(4.2928932188));
-        REQUIRE(interpolateCubic(0.25, 3, 4, 6, 7) == Approx(4.59375));
-        REQUIRE(interpolateCatmullRom(0.25, 3, 4, 6, 7) == Approx(4.453125));
-        REQUIRE(interpolateHermite(0.25, 3, 4, 6, 7, 0.5, 0.5) == Approx(4.359375));
+        REQUIRE(math::interpolateNearest(0.25, 4, 6) == Approx(4));
+        REQUIRE(math::interpolateLinear(0.25, 4, 6) == Approx(4.5));
+        REQUIRE(math::interpolateCosine(0.25, 4, 6) == Approx(4.2928932188));
+        REQUIRE(math::interpolateCubic(0.25, 3, 4, 6, 7) == Approx(4.59375));
+        REQUIRE(math::interpolateCatmullRom(0.25, 3, 4, 6, 7) == Approx(4.453125));
+        REQUIRE(math::interpolateHermite(0.25, 3, 4, 6, 7, 0.5, 0.5) == Approx(4.359375));
     }
 
     std::vector<int> data = { 1, 4, 8, -3, 7, -2 };
 
     SECTION("lambda's")
     {
-        REQUIRE(nearestInterpolation(data.begin(), data.end(), 1.25, clampAccess) == Approx(4));
-        REQUIRE(linearInterpolation(data.begin(), data.end(), 1.25, clampAccess) == Approx(5));
-        REQUIRE(cosineInterpolation(data.begin(), data.end(), 1.25, clampAccess) == Approx(4.5857864376));
-        REQUIRE(cubicInterpolation(data.begin(), data.end(), 1.25, clampAccess) == Approx(5.9375));
-        REQUIRE(catmullRomInterpolation(data.begin(), data.end(), 1.25, clampAccess) == Approx(5.28125));
-        REQUIRE(hermiteInterpolation(0.5, 0.5)(data.begin(), data.end(), 1.25, clampAccess) == Approx(4.84765625));
+        REQUIRE(math::nearestInterpolation(data.begin(), data.end(), 1.25, math::clampAccess) == Approx(4));
+        REQUIRE(math::linearInterpolation(data.begin(), data.end(), 1.25, math::clampAccess) == Approx(5));
+        REQUIRE(math::cosineInterpolation(data.begin(), data.end(), 1.25, math::clampAccess) == Approx(4.5857864376));
+        REQUIRE(math::cubicInterpolation(data.begin(), data.end(), 1.25, math::clampAccess) == Approx(5.9375));
+        REQUIRE(math::catmullRomInterpolation(data.begin(), data.end(), 1.25, math::clampAccess) == Approx(5.28125));
+        REQUIRE(math::hermiteInterpolation(0.5, 0.5)(data.begin(), data.end(), 1.25, math::clampAccess) == Approx(4.84765625));
     }
 
     SECTION("InterpolationFunction")
     {
-		InterpolationFunction<std::vector<int>::iterator> func = linearInterpolation;
-        REQUIRE(func(data.begin(), data.end(), 1.25, clampAccess) == 5);
+		math::InterpolationFunction<std::vector<int>::iterator> func = math::linearInterpolation;
+        REQUIRE(func(data.begin(), data.end(), 1.25, math::clampAccess) == 5);
     }
 }
