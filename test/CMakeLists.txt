@@ -6,7 +6,9 @@ add_definitions(-std=c++1z -Wall)
 include_directories(/usr/local/include)
 
 set(SOURCES
+	access.cpp
     main.cpp
+    interpolation.cpp
     normalize.cpp
     sigmoid.cpp
     )

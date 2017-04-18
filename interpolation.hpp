@@ -23,7 +23,7 @@ namespace math
 {
     //! Functor for storing interpolations
     template <typename Iterator>
-    using InterpolationFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t, AccessorFunction<Iterator>)>;
+    using InterpolationFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, double, AccessorFunction<Iterator>)>;
 
 // --- Interpolation free functions --- //
 
@@ -185,7 +185,7 @@ namespace math
             const auto x3 = access(begin, end, trunc + 1);
             const auto x4 = access(begin, end, trunc + 2);
             
-            return interpolateCatmullRom(fraction, x1, x2, x3, x4);
+            return interpolateHermite(fraction, x1, x2, x3, x4, tension, bias);
         };
     }
 

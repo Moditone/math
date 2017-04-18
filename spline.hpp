@@ -2,7 +2,7 @@
 //  Spline.hpp
 //  Math
 //
-//  Copyright © 2015-2016 Dsperados (info@dsperados.com). All rights reserved.
+//  Copyright © 2015-2017 Dsperados (info@dsperados.com). All rights reserved.
 //  Licensed under the BSD 3-clause license.
 //
 
