@@ -10,11 +10,9 @@
 
 #include "bezier.hpp"
 
-using namespace geo;
-
 namespace math
 {
-	double quadraticBezierAngle(const double t, const Point2f& control1, const Point2f& control2, const Point2f& point)
+	double quadraticBezierAngle(const double t, const geo::Point2f& control1, const geo::Point2f& control2, const geo::Point2f& point)
     {
         const auto invt = 1 - t;
         

@@ -8,7 +8,9 @@ add_definitions(-std=c++14 -Wall)
 include_directories(/usr/local/include)
 
 # Setup the headers and sources
-set(HEADERS access.hpp analysis.hpp bezier.hpp constants.hpp ease.hpp interleave.hpp interpolation.hpp linear.hpp normalize.hpp random.hpp sigmoid.hpp sinusoid.hpp spline.hpp statistics.hpp utility.hpp)
+set(HEADERS access.hpp analysis.hpp bezier.hpp constants.hpp ease.hpp interleave.hpp interpolation.hpp
+	linear/absolute.hpp linear/cross.hpp linear/determinant.hpp linear/diagonal.hpp linear/dot.hpp linear/inverse.hpp linear/length.hpp linear/matrix.hpp linear/normalize.hpp linear/trace.hpp linear/transpose.hpp linear/vector.hpp
+	normalize.hpp random.hpp sigmoid.hpp sinusoid.hpp spline.hpp statistics.hpp utility.hpp)
 set(SOURCES bezier.cpp)
 
 source_group(\\ FILES ${HEADERS} ${SOURCES})
