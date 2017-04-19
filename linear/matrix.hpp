@@ -258,6 +258,28 @@ namespace math
             *this = rhs;
         }
 
+        //! Copy from a smaller matrix
+        template <typename T2, std::size_t N2>
+        Matrix(const Matrix<T2, N2, N2>& rhs, const std::enable_if_t<(N2 < N), T>& diagonal)
+        {
+            std::size_t c = 0;
+            for (; c < N2; ++c)
+            {
+                std::size_t r = 0;
+                for (; r < N2; ++r)
+                    data[c][r] = rhs[c][r];
+
+                for (; r < N; ++r)
+                    data[c][r] = (c == r) ? diagonal : 0;
+            }
+
+            for (; c < N; ++c)
+            {
+                for (std::size_t r = 0; r < N; ++r)
+                    data[c][r] = (c == r) ? diagonal : 0;
+            }
+        }
+
         template <typename T2>
         Matrix& operator=(const Matrix<T2, N, N>& rhs)
         {
