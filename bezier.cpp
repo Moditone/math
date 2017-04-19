@@ -12,7 +12,7 @@
 
 namespace math
 {
-	double quadraticBezierAngle(const double t, const geo::Point2f& control1, const geo::Point2f& control2, const geo::Point2f& point)
+	double quadraticBezierAngle(const double t, const Vector2<float>& control1, const Vector2<float>& control2, const Vector2<float>& point)
     {
         const auto invt = 1 - t;
         

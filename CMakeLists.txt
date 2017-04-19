@@ -18,6 +18,10 @@ set(LINEAR_HEADERS linear/absolute.hpp linear/cross.hpp linear/determinant.hpp l
 source_group(\\linear FILES ${LINEAR_HEADERS})
 install (FILES ${LINEAR_HEADERS} DESTINATION include/dsperados/math/linear)
 
+set(GEO_HEADERS geometry/circular.hpp geometry/rectangular.hpp geometry/size.hpp)
+source_group(\\geometry FILES ${GEO_HEADERS})
+install (FILES ${GEO_HEADERS} DESTINATION include/dsperados/math/geometry)
+
 # Create the target
 add_library(Math ${HEADERS} ${SOURCES})
 install(TARGETS Math DESTINATION lib)
