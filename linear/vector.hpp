@@ -31,7 +31,8 @@ namespace math
             std::fill_n(data, N, T(0));
         }
 
-    	Vector(std::initializer_list<T> elements)
+        template <typename T2>
+    	Vector(std::initializer_list<T2> elements)
     	{
     		if (elements.size() > N)
     			throw std::runtime_error("elements.size() >= " + std::to_string(N));
@@ -264,7 +265,8 @@ namespace math
 	public:
     	Vector() = default;
 
-    	Vector(std::initializer_list<T> elements)
+        template <typename T2>
+    	Vector(std::initializer_list<T2> elements)
     	{
     		if (elements.size() > 2)
     			throw std::runtime_error("elements.size() >= 2");
@@ -401,7 +403,8 @@ namespace math
 	public:
     	Vector() = default;
 
-    	Vector(std::initializer_list<T> elements)
+        template <typename T2>
+    	Vector(std::initializer_list<T2> elements)
     	{
     		if (elements.size() > 3)
     			throw std::runtime_error("elements.size() >= 3");
@@ -551,7 +554,8 @@ namespace math
 	public:
     	Vector() = default;
 
-    	Vector(std::initializer_list<T> elements)
+        template <typename T2>
+    	Vector(std::initializer_list<T2> elements)
     	{
     		if (elements.size() > 4)
     			throw std::runtime_error("elements.size() >= 4");

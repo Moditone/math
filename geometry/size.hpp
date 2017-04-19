@@ -11,7 +11,6 @@
 #define MATH_GEOMETRY_SIZE_HPP
 
 #include <algorithm>
-#include <array>
 #include <functional>
 #include <ostream>
 #include <utility>
@@ -84,8 +83,7 @@ namespace math
         const T& operator[](std::size_t index) const { return data[index]; }
 
     private:
-        //! The actual elements in the size
-        std::array<T, N> data;
+        T data[N];
     };
 
     //! Compare two sizes for equality
@@ -116,7 +114,8 @@ namespace math
     auto operator-(const Size<T, N>& size)
     {
         auto result = size;
-        std::transform(result.begin(), result.end(), result.begin(), std::negate<>());
+        for (auto i = 0; i < N; ++i)
+            result[i] = -size.data[i];
 
         return result;
     }
@@ -127,7 +126,8 @@ namespace math
     auto operator+(const Size<T, N>& lhs, const Size<U, N>& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), rhs.begin(), y.begin(), std::plus<>());
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] + rhs.data[i];
 
         return y;
     }
@@ -138,7 +138,8 @@ namespace math
     auto operator+(const Size<T, N>& lhs, const U& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), y.begin(), [&](auto x){ return x + rhs; });
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] + rhs;
 
         return y;
     }
@@ -149,7 +150,8 @@ namespace math
     auto operator-(const Size<T, N>& lhs, const Size<U, N>& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), rhs.begin(), y.begin(), std::minus<>());
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] - rhs.data[i];
 
         return y;
     }
@@ -160,7 +162,8 @@ namespace math
     auto operator-(const Size<T, N>& lhs, const U& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), y.begin(), [&](auto x){ return x - rhs; });
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] - rhs;
 
         return y;
     }
@@ -171,7 +174,8 @@ namespace math
     auto operator*(const Size<T, N>& lhs, const U& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), y.begin(), [&](auto x){ return x * rhs; });
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] * rhs;
 
         return y;
     }
@@ -182,7 +186,8 @@ namespace math
     auto operator*(const T& lhs, const Size<U, N>& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(rhs.begin(), rhs.end(), y.begin(), [&](auto x){ return x * lhs; });
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs * rhs.data[i];
 
         return y;
     }
@@ -193,7 +198,8 @@ namespace math
     auto operator*(const Size<T, N>& lhs, const Size<U, N>& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), rhs.begin(), y.begin(), std::multiplies<>());
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] * rhs.data[i];
 
         return y;
     }
@@ -204,7 +210,8 @@ namespace math
     auto operator/(const Size<T, N>& lhs, const U& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), y.begin(), [&](auto x){ return x / rhs; });
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] / rhs;
 
         return y;
     }
@@ -215,7 +222,8 @@ namespace math
     auto operator/(const Size<T, N>& lhs, const Size<U, N>& rhs)
     {
         Size<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), rhs.begin(), y.begin(), std::divides<>());
+        for (auto i = 0; i < N; ++i)
+            y[i] = lhs.data[i] / rhs;
 
         return y;
     }
@@ -318,8 +326,11 @@ namespace math
         std::array<T, 2> asArray() const { return {{width, height}}; }
 
     public:
-        T width = T{}; //! First element as width
-        T height = T{}; //! Second element as height
+        union
+        {
+            T data[2];
+            struct { T width; T height; };
+        };
     };
 
     //! Convenience alias for 2-dimensional sizes
@@ -417,9 +428,11 @@ namespace math
         std::array<T, 3> asArray() const { return {{width, height, depth}}; }
 
     public:
-        T width = T{}; //! First element as width
-        T height = T{}; //! Second element as height
-        T depth = T{}; //! Third element as depth
+        union
+        {
+            T data[3];
+            struct { T width; T height; T depth; };
+        };
     };
 
     //! Convenience alias for 3-dimensional sizes
@@ -439,7 +452,8 @@ namespace math
     auto operator+(const Vector<T, N>& lhs, const Size<U, N>& rhs)
     {
         Vector<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), rhs.begin(), y.begin(), std::plus<>());
+        for (auto i = 0; i < N; ++i)
+            y.data[i] = lhs[i] + rhs[i];
 
         return y;
     }
@@ -451,7 +465,8 @@ namespace math
     auto operator-(const Vector<T, N>& lhs, const Size<U, N>& rhs)
     {
         Vector<std::common_type_t<T, U>, N> y;
-        std::transform(lhs.begin(), lhs.end(), rhs.begin(), y.begin(), std::minus<>());
+        for (auto i = 0; i < N; ++i)
+            y.data[i] = lhs[i] - rhs[i];
 
         return y;
     }
