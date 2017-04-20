@@ -11,6 +11,7 @@
 #define DSPERADOS_GEOMETRY_BIN_PACKING_SPACE_HPP
 
 #include <array>
+#include <cassert>
 #include <memory>
 
 #include "rectangular.hpp"
@@ -34,7 +35,7 @@ namespace math
         }
 		
 		//! Insert a rectangle of a given size inside the space.
-		/*! @return nullptr if there was no space */
+		/*! @return nullptr if there was no space left */
         Rectanglei* insert(const Size2i& size)
         {
             return root.insert(size);
@@ -55,16 +56,16 @@ namespace math
 			/*! @return nullptr if there was no space */
 			Rectanglei* insert(const Size2i& size)
             {
-                if (childs[0] != nullptr)
+                if (children.first != nullptr)
                 {
                     // Is there room in the first child?
-                    auto result = childs[0]->insert(size);
+                    const auto result = children.first->insert(size);
                     if (result)
                         return result;
                     
                     // Is there room in the second child?
-                    assert(childs[1] != nullptr);
-                    return childs[1]->insert(size);
+                    assert(children.second != nullptr);
+                    return children.second->insert(size);
                 } else {
                     if (taken)
                         return nullptr;
@@ -86,23 +87,23 @@ namespace math
                     // Split up
                     if (deltaWidth > deltaHeight)
                     {
-                        childs[0] = std::make_unique<Node>(Rectanglei(bounds.origin, Size2i(bounds.size.width - deltaWidth, bounds.size.height)));
-                        childs[1] = std::make_unique<Node>(Rectanglei({bounds.origin.x + size.width, bounds.origin.y}, Size2i(deltaWidth, bounds.size.height)));
+                        children.first = std::make_unique<Node>(Rectanglei(bounds.origin, Size2i(bounds.size.width - deltaWidth, bounds.size.height)));
+                        children.second = std::make_unique<Node>(Rectanglei({bounds.origin.x + size.width, bounds.origin.y}, Size2i(deltaWidth, bounds.size.height)));
                     } else {
-                        childs[0] = std::make_unique<Node>(Rectanglei(bounds.origin, Size2i(bounds.size.width, bounds.size.height - deltaHeight)));
-                        childs[1] = std::make_unique<Node>(Rectanglei({bounds.origin.x, bounds.origin.y + size.height}, Size2i(bounds.size.width, deltaHeight)));
+                        children.first = std::make_unique<Node>(Rectanglei(bounds.origin, Size2i(bounds.size.width, bounds.size.height - deltaHeight)));
+                        children.second = std::make_unique<Node>(Rectanglei({bounds.origin.x, bounds.origin.y + size.height}, Size2i(bounds.size.width, deltaHeight)));
                     }
                     
-                    return childs[0]->insert(size);
+                    return children.first->insert(size);
                 }
                 
                 return nullptr;
             }
 			
 		public:
-			//! The child nodes of this node
-			/*! If this node is a leaf, the childs a nullptrs */
-			std::array<std::unique_ptr<Node>, 2> childs;
+			//! The children of this node
+			/*! If this node is a leaf, the children are nullptrs */
+			std::pair<std::unique_ptr<Node>, std::unique_ptr<Node>> children;
 			
 			//! The bounds of this node
 			Rectanglei bounds;
