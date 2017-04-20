@@ -17,7 +17,7 @@ set(LINEAR_HEADERS linear/absolute.hpp linear/cross.hpp linear/determinant.hpp l
 source_group(\\linear FILES ${LINEAR_HEADERS})
 install (FILES ${LINEAR_HEADERS} DESTINATION include/dsperados/math/linear)
 
-set(GEO_HEADERS geometry/circular.hpp geometry/rectangular.hpp geometry/size.hpp geometry/triangular.hpp)
+set(GEO_HEADERS geometry/bin_packing_space.hpp geometry/circular.hpp geometry/rectangular.hpp geometry/size.hpp geometry/triangular.hpp)
 source_group(\\geometry FILES ${GEO_HEADERS})
 install (FILES ${GEO_HEADERS} DESTINATION include/dsperados/math/geometry)
 
