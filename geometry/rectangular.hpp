@@ -127,92 +127,6 @@ namespace math
         return rect;
     }
     
-    //! Does a rectangular contain a point?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool containsExclusive(const Rectangular<T, N>& rect, const Vector<U, N>& point)
-    {
-        const auto r = normalize(rect);
-        for (auto n = 0; n < N; ++n)
-        {
-            if (point[n] < r.origin[n] || r.outer()[n] <= point[n])
-                return false;
-        }
-        
-        return true;
-    }
-
-    //! Does a rectangular contain a point?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool containsInclusive(const Rectangular<T, N>& rect, const Vector<U, N>& point)
-    {
-        const auto r = normalize(rect);
-        for (auto n = 0; n < N; ++n)
-        {
-            if (point[n] < r.origin[n] || r.outer()[n] < point[n])
-                return false;
-        }
-
-        return true;
-    }
-    
-    //! Does a rectangular contain another?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool containsExclusive(const Rectangular<T, N>& rect1, const Rectangular<U, N>& rect2)
-    {
-        return containsExclusive(rect1, rect2.origin) && containsExclusive(rect1, rect2.outer());
-    }
-    
-    //! Does a rectangular contain another?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool containsInclusive(const Rectangular<T, N>& rect1, const Rectangular<U, N>& rect2)
-    {
-        return containsInclusive(rect1, rect2.origin) && containsInclusive(rect1, rect2.outer());
-    }
-
-    //! Do two rectangulars intersect?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool intersectsExclusive(const Rectangular<T, N>& rect1, const Rectangular<U, N>& rect2)
-    {
-        const auto r1 = normalize(rect1);
-        const auto r2 = normalize(rect2);
-
-        for (auto n = 0; n < N; ++n)
-        {
-            if (((r1.origin[n] < r2.origin[n]) || (r1.origin[n] >= r2.outer()[n])) &&
-                ((r2.origin[n] < r1.origin[n]) || (r2.origin[n] >= r1.outer()[n])))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    //! Do two rectangulars intersect?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool intersectsInclusive(const Rectangular<T, N>& rect1, const Rectangular<U, N>& rect2)
-    {
-        const auto r1 = normalize(rect1);
-        const auto r2 = normalize(rect2);
-
-        for (auto n = 0; n < N; ++n)
-        {
-            if (((r1.origin[n] < r2.origin[n]) || (r1.origin[n] > r2.outer()[n])) &&
-                ((r2.origin[n] < r1.origin[n]) || (r2.origin[n] > r1.outer()[n])))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    
     //! Move a rectangular
     template <class T, std::size_t N, class U>
     Rectangular<std::common_type_t<T, U>, N> move(const Rectangular<T, N>& rect, const Size<U, N>& distance)
@@ -232,76 +146,6 @@ namespace math
     Rectangular<std::common_type_t<T, U>, N> resize(const Rectangular<T, N>& rect, const U& factor)
     {
         return {rect.origin, rect.size * factor};
-    }
-
-    //! Expand a rectangular
-    /*! @relates Rectangular */
-    template <class T, std::size_t N, class U>
-    auto expand(const Rectangular<T, N>& rect, const Size<U, N>& expansion)
-    {
-        Rectangular<std::common_type_t<T, U>, N> result = rect;
-        
-        for (auto i = 0; i < N; ++i)
-        {
-            if (result.size[i] < 0)
-            {
-                result.origin[i] += expansion[i];
-                result.size[i] -= expansion[i] * 2;
-            } else {
-                result.origin[i] -= expansion[i];
-                result.size[i] += expansion[i] * 2;
-            }
-        }
-        
-        return result;
-    }
-
-    //! Expand a rectangular to contain a point
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    auto expand(const Rectangular<T, N>& rect, const Vector<U, N>& point)
-    {
-        Rectangular<std::common_type_t<T, U>, N> result;
-
-        for (auto n = 0; n < N; ++n)
-        {
-            result.origin[n] = std::min(point[n], rect.origin[n]);
-            result.origin[n] = std::max(point[n], rect.origin[n] + rect.size[n]) - result.origin[n];
-        }
-
-        return result;
-    }
-
-    //! Expand a rectangular to contain another
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    auto expand(const Rectangular<T, N>& rect, const Rectangular<U, N>& rhs)
-    {
-        return expand(expand(rect, rhs.origin), rhs.outer());
-    }
-
-    //! Reduce a rectangular
-    /*! @relates Rectangular */
-    template <class T, std::size_t N, class U>
-    auto reduce(const Rectangular<T, N>& rect, const Size<U, N>& reduction)
-    {
-        return expand(rect, -reduction);
-    }
-
-    //! The intersection of two rectangulars
-    /*! The intersection is the rectangular that both lhs and rhs have in common
-        @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    Rectangular<T, N> intersect(const Rectangular<T, N>& lhs, const Rectangular<U, N>& rhs)
-    {
-        Rectangular<std::common_type_t<T, U>, N> intersection;
-        for (auto i = 0; i < N; ++i)
-        {
-            intersection.origin[i] = std::max<T>(lhs.origin[i], rhs.origin[i]);
-            intersection.size[i] = std::min<T>(lhs.origin[i] + lhs.size[i], rhs.origin[i] + rhs.size[i]) - intersection.origin[i];
-        }
-
-        return intersection;
     }
 
     //! A rectangle
@@ -390,22 +234,6 @@ namespace math
         //! The size of the rectangle
         Size2<T> size;
     };
-    
-    //! Expand a rectangle
-    /*! @relates Rectangular */
-    template <class T, class U, class V>
-    auto expand(const Rectangular<T, 2>& rect, const U& horizontal, const V& vertical)
-    {
-        return expand(rect, Size2<std::common_type_t<U, V>>(horizontal, vertical));
-    }
-    
-    //! Reduce a rectangle
-    /*! @relates Rectangular */
-    template <class T, class U, class V>
-    auto reduce(const Rectangular<T, 2>& rect, const U& horizontal, const V& vertical)
-    {
-        return reduce(rect, Size2<std::common_type_t<U, V>>(horizontal, vertical));
-    }
 
     //! Convenience alias for rectangles
     /*! @relates Rectangular */

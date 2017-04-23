@@ -95,36 +95,6 @@ namespace math
         return stream << "(" << circular.center << ", " << circular.radius << ")";
     }
     
-    //! Does a circular contain a point?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool containsInclusive(const Circular<T, N>& circular, const Vector<U, N>& point)
-    {
-        std::common_type_t<T, U> acc = 0;
-        for (auto n = 0; n < N; ++n)
-        {
-            const auto d = std::fabs(point[n] - circular.center[n]);
-            acc += d * d;
-        }
-        
-        return std::sqrt(acc) <= circular.radius;
-    }
-    
-    //! Does a circular contain a point?
-    /*! @relates Rectangular */
-    template <class T, class U, std::size_t N>
-    bool containsExclusive(const Circular<T, N>& circular, const Vector<U, N>& point)
-    {
-        std::common_type_t<T, U> acc = 0;
-        for (auto n = 0; n < N; ++n)
-        {
-            const auto d = std::fabs(point[n] - circular.center[n]);
-            acc += d * d;
-        }
-        
-        return std::sqrt(acc) < circular.radius;
-    }
-    
     //! Resize a circular
     template <class T, std::size_t N, class U>
     Circular<std::common_type_t<T, U>, N> resize(const Circular<T, N>& circular, const U& factor)
