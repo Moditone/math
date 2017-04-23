@@ -9,6 +9,7 @@
 #ifndef MATH_GEOMETRY_REDUCTION_HPP
 #define MATH_GEOMETRY_REDUCTION_HPP
 
+#include "expansion.hpp"
 #include "rectangular.hpp"
 #include "size.hpp"
 
