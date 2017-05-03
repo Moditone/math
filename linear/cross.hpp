@@ -28,7 +28,7 @@ namespace math
         
         result.x = lhs.y * rhs.z - lhs.z * rhs.y;
         result.y = lhs.z * rhs.x - lhs.x * rhs.z;
-        result.z = lhs.x * rhs.y - lhs.y * lhs.x;
+        result.z = lhs.x * rhs.y - lhs.y * rhs.x;
         
         return result;
     }
