@@ -8,7 +8,7 @@ add_definitions(-std=c++14 -Wall)
 include_directories(/usr/local/include)
 
 # Setup the headers and sources
-set(HEADERS access.hpp analysis.hpp bezier.hpp constants.hpp ease.hpp interleave.hpp interpolation.hpp normalize.hpp random.hpp sigmoid.hpp sinusoid.hpp spline.hpp statistics.hpp utility.hpp)
+set(HEADERS access.hpp analysis.hpp bezier.hpp constants.hpp ease.hpp interleave.hpp interpolation.hpp max.hpp normalize.hpp random.hpp sigmoid.hpp sinusoid.hpp spline.hpp statistics.hpp utility.hpp)
 
 source_group(\\ FILES ${HEADERS})
 install (FILES ${HEADERS} DESTINATION include/dsperados/math)
