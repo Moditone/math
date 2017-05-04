@@ -13,4 +13,16 @@ namespace math
         
         return result;
     }
+    
+    //! max value a range with a scalar
+    template <typename T, std::size_t N>
+    auto max(const Vector<T, N>& lhs, const T rhs)
+    {
+        Vector<T, N> result;
+        
+        for(auto i = 0; i < N; i++)
+            result[i] = std::max(lhs[i], rhs);
+        
+        return result;
+    }
 }

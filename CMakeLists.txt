@@ -14,6 +14,7 @@ source_group(\\ FILES ${HEADERS})
 install (FILES ${HEADERS} DESTINATION include/dsperados/math)
 
 set(LINEAR_HEADERS linear/absolute.hpp linear/cross.hpp linear/determinant.hpp linear/diagonal.hpp linear/dot.hpp linear/inverse.hpp linear/length.hpp linear/matrix.hpp linear/normalize.hpp linear/trace.hpp linear/transpose.hpp linear/vector.hpp)
+
 source_group(\\linear FILES ${LINEAR_HEADERS})
 install (FILES ${LINEAR_HEADERS} DESTINATION include/dsperados/math/linear)
 
