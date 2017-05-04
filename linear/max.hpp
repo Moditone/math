@@ -1,8 +1,13 @@
+#ifndef MATH_LINEAR_MAX_HPP
+#define MATH_LINEAR_MAX_HPP
+
 #include <cmath>
+
+#include "vector.hpp"
 
 namespace math
 {
-    //! max value a range
+    //! Compute the piecewise maximum of two vectors
     template <typename T, std::size_t N>
     auto max(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
     {
@@ -14,3 +19,5 @@ namespace math
         return result;
     }
 }
+
+#endif
