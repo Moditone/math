@@ -104,6 +104,9 @@ namespace math
 		{
             //! The elements of the matrix in column-major order
 			T data[C][R];
+            
+            //! The elements of the matrix in a one-dimensional array
+            T data1d[C * R];
 
             //! The elements of the matrix as column vectors
             Vector<T, R> columns[C];
@@ -346,6 +349,9 @@ namespace math
         {
             //! The elements of the matrix in column-major order
             T data[N][N];
+            
+            //! The elements of the matrix in a one-dimensional array
+            T data1d[N * N];
 
             //! The elements of the matrix as column vectors
             Vector<T, N> columns[N];
