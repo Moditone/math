@@ -22,6 +22,7 @@ namespace math
     
     template <class T> const T SQRT_TWO = 1.41421356237309504880168872420969807; //!< The square root of 2, Pythagoras' constant
     template <class T> const T HALF_SQRT_TWO = SQRT_TWO<T> * 0.5; //!< Half the square root of 2
+    template <class T> using SQRT_HALF = HALF_SQRT_TWO; //! < The square root of 0.5
     template <class T> const T SQRT_THREE = 1.73205080756887729352744634150587236; //!< The square root of 3, Theodorus' constant
     template <class T> const T SQRT_FIVE = 2.23606797749978969640917366873127623; //!< The square root of 5
     
@@ -29,6 +30,7 @@ namespace math
     
     template <class T> const T PHI = 1.61803398874989484820458683436563811; //!< The golden ratio
     template <class T> const T INVERSE_PHI = T{1} / PHI<T>; //!< The golden ratio
+    template <class T> using GOLDEN_RATIO = INVERSE_PHI;
 }
 
 #endif
