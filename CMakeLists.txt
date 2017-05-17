@@ -23,11 +23,8 @@ source_group(\\geometry FILES ${GEO_HEADERS})
 install (FILES ${GEO_HEADERS} DESTINATION include/dsperados/math/geometry)
 
 # Create the target
-# add_library(Math ${HEADERS})
-# install(TARGETS Math DESTINATION lib)
+add_library(Math INTERFACE)
+target_sources(Math INTERFACE ${HEADERS} ${LINEAR_HEADERS} ${GEO_HEADERS})
 
-# if (BUILD_SHARED_LIBS)
-# 	set_target_properties(Math PROPERTIES OUTPUT_NAME math)
-# else (BUILD_SHARED_LIBS)
-# 	set_target_properties(Math PROPERTIES OUTPUT_NAME math_static)
-# endif (BUILD_SHARED_LIBS)
+# Added this just so that IDE's show the headers
+add_custom_target(Headers SOURCES ${HEADERS})
