@@ -62,7 +62,7 @@ namespace math
     static const auto easeQuinticOutIn = easeInOut(easeQuinticOut);
 
     inline auto easeExponentialIn(double exponent) { return [=](const auto x){ return std::pow(x, exponent); }; }
-    inline auto easeExponentialOut(double exponent) { return easeInvert(easeExponentialIn); }
+    inline auto easeExponentialOut(double exponent) { return easeInvert(easeExponentialIn(exponent)); }
     inline auto easeExponentialInOut(double exponent) { return easeInOut(easeExponentialIn(exponent)); }
     inline auto easeExponentialOutIn(double exponent) { return easeInOut(easeExponentialOut(exponent)); }
     

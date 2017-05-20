@@ -21,9 +21,9 @@ namespace math
     template <class InputIt1, class InputIt2, class OutputIt>
     void interleave(InputIt1 inBegin1, InputIt1 inEnd, InputIt2 inBegin2, OutputIt outBegin)
     {
-        for (auto it = inBegin1; it != inEnd; ++it)
+        while (inBegin1 != inEnd)
         {
-            *outBegin++ = *it;
+            *outBegin++ = *inBegin1++;
             *outBegin++ = *inBegin2++;
         }
     }

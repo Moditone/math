@@ -43,7 +43,6 @@ endif(UNIX)
 
 add_library(Math INTERFACE)
 target_sources(Math INTERFACE ${HEADERS} ${LINEAR_HEADERS} ${GEO_HEADERS})
-#install(TARGETS Math DESTINATION lib)
 
 # Added this just so that IDE's show the headers
 add_custom_target(Headers SOURCES ${HEADERS})
