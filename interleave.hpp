@@ -32,10 +32,10 @@ namespace math
     template <class InputIt, class OutputIt1, class OutputIt2>
     void deinterleave(InputIt inBegin, InputIt inEnd, OutputIt1 outBegin1, OutputIt2 outBegin2)
     {
-        for (auto it = inBegin; it != inEnd; ++it)
+        while (inBegin != inEnd)
         {
-            *outBegin1++ = *it++;
-            *outBegin2++ = *it;
+            *outBegin1++ = *inBegin++;
+            *outBegin2++ = *inBegin++;
         }
     }
 }

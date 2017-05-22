@@ -30,15 +30,19 @@ TEST_CASE("Interleave")
 
     SECTION("Deinterleave")
     {
-        std::vector<float> a = { 1, 2, 3, 4 };
-        std::vector<float> b(2);
-        std::vector<float> c(2);
+        std::vector<float> a = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        std::vector<float> b(a.size() / 2);
+        std::vector<float> c(a.size() / 2);
 
         math::deinterleave(a.begin(), a.end(), b.begin(), c.begin());
 
         REQUIRE(b[0] == 1);
         REQUIRE(b[1] == 3);
+        REQUIRE(b[2] == 5);
+        REQUIRE(b[3] == 7);
         REQUIRE(c[0] == 2);
         REQUIRE(c[1] == 4);
+        REQUIRE(c[2] == 6);
+        REQUIRE(c[3] == 8);
     }
 }
