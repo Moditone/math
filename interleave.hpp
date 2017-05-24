@@ -18,24 +18,34 @@
 namespace math
 {
     //! Interleave two ranges
-    template <class InputIt1, class InputIt2, class OutputIt>
+    template <typename InputIt1, typename InputIt2, typename OutputIt>
     void interleave(InputIt1 inBegin1, InputIt1 inEnd, InputIt2 inBegin2, OutputIt outBegin)
     {
         while (inBegin1 != inEnd)
         {
-            *outBegin++ = *inBegin1++;
-            *outBegin++ = *inBegin2++;
+            *outBegin = static_cast<std::decay_t<decltype(*outBegin)>>(*inBegin1);
+            std::advance(outBegin, 1);
+            std::advance(inBegin1, 1);
+            
+            *outBegin = static_cast<std::decay_t<decltype(*outBegin)>>(*inBegin2);
+            std::advance(outBegin, 1);
+            std::advance(inBegin2, 1);
         }
     }
     
     //! Deinterleave a range into two ranges
-    template <class InputIt, class OutputIt1, class OutputIt2>
+    template <typename InputIt, typename OutputIt1, typename OutputIt2>
     void deinterleave(InputIt inBegin, InputIt inEnd, OutputIt1 outBegin1, OutputIt2 outBegin2)
     {
         while (inBegin != inEnd)
         {
-            *outBegin1++ = *inBegin++;
-            *outBegin2++ = *inBegin++;
+            *outBegin1 = static_cast<std::decay_t<decltype(*outBegin1)>>(*inBegin);
+            std::advance(outBegin1, 1);
+            std::advance(inBegin, 1);
+            
+            *outBegin2 = static_cast<std::decay_t<decltype(*outBegin2)>>(*inBegin);
+            std::advance(outBegin2, 1);
+            std::advance(inBegin, 1);
         }
     }
 }

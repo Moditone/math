@@ -35,7 +35,8 @@ namespace math
     std::enable_if_t<std::is_unsigned<T>::value, T> clamp(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
-        return clamp<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        const auto result = clamp<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        return static_cast<T>(result);
     }
     
     //! Wrap a number within a given range
@@ -61,7 +62,8 @@ namespace math
     std::enable_if_t<std::is_unsigned<T>::value, T> wrap(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
-        return wrap<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        const auto& result = wrap<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        return static_cast<T>(result);
     }
     
     //! Wrap a number within a given range, where min = 0
