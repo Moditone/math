@@ -83,6 +83,27 @@ namespace math
         return value;
     }
     
+    //! Unwrap a range of values
+    template <typename Iterator>
+    void unwrap(Iterator begin, Iterator end, const typename Iterator::value_type& min, const typename Iterator::value_type& max)
+    {
+        auto previous = *begin;
+        std::advance(begin, 1);
+        const auto difference = max - min;
+        
+        std::transform(begin, end, begin, [&](auto phase)
+        {
+            while (phase - previous <= min)
+                phase += difference;
+                           
+            while (phase - previous > max)
+                phase -= difference;
+                           
+            previous = phase;
+            return phase.value;
+        });
+    }
+    
     //! Returns whether an integral is a power of two
     /*! @return false for x == 0 */
     constexpr bool isPowerOf2(size_t x)
