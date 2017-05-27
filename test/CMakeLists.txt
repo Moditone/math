@@ -11,11 +11,7 @@ set(SOURCES
     interleave.cpp
     interpolation.cpp
     normalize.cpp
-    sigmoid.cpp
-    )
+    sigmoid.cpp)
 
 add_executable(math-test ${SOURCES})
 target_sources(math-test PRIVATE ${SOURCES})
-
-find_library(Math math)
-target_link_libraries(math-test ${Math})

@@ -35,7 +35,8 @@ namespace math
     std::enable_if_t<std::is_unsigned<T>::value, T> clamp(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
-        return clamp<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        const auto result = clamp<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        return static_cast<T>(result);
     }
     
     //! Wrap a number within a given range
@@ -61,7 +62,8 @@ namespace math
     std::enable_if_t<std::is_unsigned<T>::value, T> wrap(T value, const T& min, const T& max)
     {
         using T2 = typename std::make_signed<T>::type;
-        return wrap<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        const auto& result = wrap<T2>(static_cast<T2>(value), static_cast<T2>(min), static_cast<T2>(max));
+        return static_cast<T>(result);
     }
     
     //! Wrap a number within a given range, where min = 0
@@ -79,6 +81,27 @@ namespace math
             value += max;
         
         return value;
+    }
+    
+    //! Unwrap a range of values
+    template <typename Iterator>
+    void unwrap(Iterator begin, Iterator end, const typename Iterator::value_type& min, const typename Iterator::value_type& max)
+    {
+        auto previous = *begin;
+        std::advance(begin, 1);
+        const auto difference = max - min;
+        
+        std::transform(begin, end, begin, [&](auto phase)
+        {
+            while (phase - previous <= min)
+                phase += difference;
+                           
+            while (phase - previous > max)
+                phase -= difference;
+                           
+            previous = phase;
+            return phase.value;
+        });
     }
     
     //! Returns whether an integral is a power of two

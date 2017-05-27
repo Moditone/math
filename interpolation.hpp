@@ -111,7 +111,7 @@ namespace math
     //! Lambda executing nearest interpolation
     static const auto nearestInterpolation = [](auto begin, auto end, auto index, auto access)
     {
-        const std::ptrdiff_t trunc = std::floor(index);
+        const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
         
         const auto x1 = access(begin, end, trunc);
@@ -123,7 +123,7 @@ namespace math
     //! Lambda executing linear interpolation
     static const auto linearInterpolation = [](auto begin, auto end, auto index, auto access)
     {
-        const std::ptrdiff_t trunc = std::floor(index);
+        const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
         
         const auto x1 = access(begin, end, trunc);
@@ -135,7 +135,7 @@ namespace math
     //! Lambda executing cosine interpolation
     static const auto cosineInterpolation = [](auto begin, auto end, auto index, auto access)
     {
-        const std::ptrdiff_t trunc = std::floor(index);
+        const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
         
         const auto x1 = access(begin, end, trunc);
@@ -147,7 +147,7 @@ namespace math
     //! Lambda executing cosine interpolation
     static const auto cubicInterpolation = [](auto begin, auto end, auto index, auto access)
     {
-        const std::ptrdiff_t trunc = std::floor(index);
+        const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
         
         const auto x1 = access(begin, end, trunc - 1);
@@ -161,7 +161,7 @@ namespace math
     //! Lambda executing cosine interpolation
     static const auto catmullRomInterpolation = [](auto begin, auto end, auto index, auto access)
     {
-        const std::ptrdiff_t trunc = std::floor(index);
+        const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
         
         const auto x1 = access(begin, end, trunc - 1);
@@ -177,7 +177,7 @@ namespace math
     {
         return [tension, bias](auto begin, auto end, auto index, auto access)
         {
-            const std::ptrdiff_t trunc = std::floor(index);
+            const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
             const auto fraction = index - trunc;
             
             const auto x1 = access(begin, end, trunc - 1);
