@@ -33,9 +33,9 @@ if (WIN32)
 endif(WIN32)
 
 if(UNIX)
-	install (FILES ${HEADERS} DESTINATION include/math)
-	install (FILES ${LINEAR_HEADERS} DESTINATION include/math/linear)
-	install (FILES ${GEO_HEADERS} DESTINATION include/math/geometry)
+	install (FILES ${HEADERS} DESTINATION include/dsperados/math)
+	install (FILES ${LINEAR_HEADERS} DESTINATION include/dsperados/math/linear)
+	install (FILES ${GEO_HEADERS} DESTINATION include/dsperados/math/geometry)
 endif(UNIX)
 
 
