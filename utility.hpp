@@ -111,6 +111,20 @@ namespace math
         return (x == 0) ? false : (x == 1 || (x & (x - 1)) == 0);
     }
     
+    //! Returns whether an integral is a power of two + 1, useful for checking a spectrum size
+    /*! @return false for x == 0 */
+    constexpr bool isPowerOf2plus1(size_t x)
+    {
+        if (x == 0)
+            return false;
+        
+        x--;
+        if (x == 1 || (x & (x - 1)) == 0)
+            return true;
+        else
+            return false;
+    }
+    
     //! Find the smallest power of 2 bigger than a given number
     /*! @return 1 for x == 0 */
     inline static size_t ceilToPowerOf2(size_t x)
