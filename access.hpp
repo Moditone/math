@@ -15,7 +15,8 @@
 #include <stdexcept>
 #include <type_traits>
 
-#include "utility.hpp"
+#include "clamp.hpp"
+#include "wrap.hpp"
 
 namespace math
 {
