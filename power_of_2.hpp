@@ -29,7 +29,7 @@ namespace math
     
     //! Find the smallest power of 2 bigger than a given number
     /*! @return 1 for x == 0 */
-    inline static std::size_t ceilToPowerOf2(std::size_t x)
+    constexpr std::size_t ceilToPowerOf2(std::size_t x)
     {
         std::size_t y = 1;
         while (y < x)
