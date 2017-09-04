@@ -7,7 +7,7 @@ project(Math CXX)
 add_definitions(-std=c++14 -Wall)
 
 if(WINDOWS)
-	SET(INCLUDEFOLDER "C:/Program Files (x86)")
+	SET(INCLUDEFOLDER "C:/Program Files")
 endif(WINDOWS)
 
 if(UNIX)
