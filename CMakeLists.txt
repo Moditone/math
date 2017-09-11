@@ -27,15 +27,15 @@ set(GEO_HEADERS geometry/bin_packing_space.hpp geometry/circular.hpp geometry/co
 source_group(\\geometry FILES ${GEO_HEADERS})
 
 if (WIN32)
-	install (FILES ${HEADERS} DESTINATION dsperados/dsperados/math/)
-	install (FILES ${LINEAR_HEADERS} DESTINATION dsperados/dsperados/math/linear)
-	install (FILES ${GEO_HEADERS} DESTINATION dsperados/dsperados/math/geometry)
+	install (FILES ${HEADERS} DESTINATION moditone/math/)
+	install (FILES ${LINEAR_HEADERS} DESTINATION moditone/math/linear)
+	install (FILES ${GEO_HEADERS} DESTINATION moditone/math/geometry)
 endif(WIN32)
 
 if(UNIX)
-	install (FILES ${HEADERS} DESTINATION include/dsperados/math)
-	install (FILES ${LINEAR_HEADERS} DESTINATION include/dsperados/math/linear)
-	install (FILES ${GEO_HEADERS} DESTINATION include/dsperados/math/geometry)
+	install (FILES ${HEADERS} DESTINATION include/moditone/math)
+	install (FILES ${LINEAR_HEADERS} DESTINATION include/moditone/math/linear)
+	install (FILES ${GEO_HEADERS} DESTINATION include/moditone/math/geometry)
 endif(UNIX)
 
 
