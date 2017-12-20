@@ -77,7 +77,7 @@ namespace math
                 phase -= difference;
            
             previous = phase;
-            return phase.value;
+            return phase;
         });
     }
 }
