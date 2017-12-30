@@ -9,6 +9,8 @@
 #ifndef MATH_LINEAR_INVERSE_HPP
 #define MATH_LINEAR_INVERSE_HPP
 
+#include <stdexcept>
+
 #include "determinant.hpp"
 #include "matrix.hpp"
 
@@ -43,7 +45,7 @@ namespace math
         		 (mat[0][2] * mat[1][0] - mat[0][0] * mat[1][2]) * dr},
         		{(mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0]) * dr,
         		 (mat[0][1] * mat[2][0] - mat[0][0] * mat[2][1]) * dr,
-        		 (mat[0][0] * mat[1][1] - mat[0][1] * mat[1][02]) * dr}};
+        		 (mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]) * dr}};
     }
 }
 
