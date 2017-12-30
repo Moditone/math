@@ -419,15 +419,15 @@ namespace math
     {
         return {{ lhs[0][0] * rhs[0][0] + lhs[1][0] * rhs[0][1] + lhs[2][0] * rhs[0][2],
                   lhs[0][1] * rhs[0][0] + lhs[1][1] * rhs[0][1] + lhs[2][1] * rhs[0][2],
-                  lhs[0][2] * rhs[0][0] + lhs[2][1] * rhs[0][1] + lhs[2][2] * rhs[0][2] },
+                  lhs[0][2] * rhs[0][0] + lhs[1][2] * rhs[0][1] + lhs[2][2] * rhs[0][2] },
 
                 { lhs[0][0] * rhs[1][0] + lhs[1][0] * rhs[1][1] + lhs[2][0] * rhs[1][2],
                   lhs[0][1] * rhs[1][0] + lhs[1][1] * rhs[1][1] + lhs[2][1] * rhs[1][2],
-                  lhs[0][2] * rhs[1][0] + lhs[2][1] * rhs[1][1] + lhs[2][2] * rhs[1][2] },
+                  lhs[0][2] * rhs[1][0] + lhs[1][2] * rhs[1][1] + lhs[2][2] * rhs[1][2] },
 
                 { lhs[0][0] * rhs[2][0] + lhs[1][0] * rhs[2][1] + lhs[2][0] * rhs[2][2],
                   lhs[0][1] * rhs[2][0] + lhs[1][1] * rhs[2][1] + lhs[2][1] * rhs[2][2],
-                  lhs[0][2] * rhs[2][0] + lhs[2][1] * rhs[2][1] + lhs[2][2] * rhs[2][2] }};
+                  lhs[0][2] * rhs[2][0] + lhs[1][2] * rhs[2][1] + lhs[2][2] * rhs[2][2] }};
     }
 }
 
