@@ -17,12 +17,14 @@
 namespace math
 {
     //! Wrap a number within a given range
-    /*! @throw std::invalid_argument if max <= min */
     template <typename T>
     std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> wrap(T value, const T& min, const T& max)
     {
-        if (max <= min)
-            throw std::invalid_argument("max <= min");
+        if (min == max)
+            return min;
+        
+        if (max < min)
+            return wrap(value, max, min);
         
         while (max <= value)
             value -= (max - min);
