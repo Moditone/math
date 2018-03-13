@@ -22,12 +22,13 @@ namespace math
 {
     //! Functors for storing accessors
     template <typename Iterator>
-    using AccessorFunction = std::function<std::decay_t<decltype(*std::declval<Iterator>())>(Iterator, Iterator, std::ptrdiff_t)>;
+    using AccessorFunction = std::function<typename std::iterator_traits<Iterator>::value_type(Iterator, Iterator, std::ptrdiff_t)>;
 
 // --- Accessor lambda's --- //
 
     //! Lambda throwing when accessing outside of range
-    static const auto throwAccess = [](auto begin, auto end, std::ptrdiff_t index) -> typename std::iterator_traits<decltype(begin)>::reference
+    template <typename Iterator>
+    auto accessThrowing(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
     {
         if (index < 0 || index >= std::distance(begin, end))
             throw std::out_of_range("accessing out of the iterator range");
@@ -35,35 +36,33 @@ namespace math
         return *std::next(begin, index);
     };
     
-    //! Generates lamdba returning a constant value when accessing outside of a range
-    template <typename T>
-    const auto constantAccess(const T& constant)
+    template <typename Iterator, typename Constant>
+    auto accessConstant(Iterator begin, Iterator end, std::ptrdiff_t index, const Constant& constant) ->
+        typename std::common_type<typename std::iterator_traits<Iterator>::reference, Constant>::type
     {
-        return [constant](auto begin, auto end, std::ptrdiff_t index) -> typename std::iterator_traits<decltype(begin)>::value_type
-        {
-            if (index < 0 || index >= std::distance(begin, end))
-                return constant;
-            
-            return *std::next(begin, index);
-        };
+        if (index < 0 || index >= std::distance(begin, end))
+            return constant;
+        
+        return *std::next(begin, index);
     }
     
     //! Lambda clamping index when accessing outside of range
 	template <typename Iterator>
-    auto clampAccess(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
+    auto accessClamped(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
     {
         return *std::next(begin, clamp<std::ptrdiff_t>(index, 0, std::distance(begin, end) - 1));
     };
     
     //! Lambda wrapping index when accessing outside of range
 	template <typename Iterator>
-    auto wrapAccess(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
+    auto accessWrapped(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
     {
         return *std::next(begin, wrap<std::ptrdiff_t>(index, std::distance(begin, end)));
     };
     
     //! Lambda mirroring index when accessing outside of range
-    static const auto mirrorAccess = [](auto begin, auto end, std::ptrdiff_t index) -> typename std::iterator_traits<decltype(begin)>::reference
+    template <typename Iterator>
+    auto accessMirrored(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
     {
         std::ptrdiff_t size = std::distance(begin, end);
         

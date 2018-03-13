@@ -109,7 +109,8 @@ namespace math
 // --- Interpolation lambda's --- //
     
     //! Lambda executing nearest interpolation
-    static const auto nearestInterpolation = [](auto begin, auto end, auto index, auto access)
+    template <typename Iterator, typename Accessor>
+    auto interpolateNearest(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -121,7 +122,8 @@ namespace math
     };
     
     //! Lambda executing linear interpolation
-    static const auto linearInterpolation = [](auto begin, auto end, auto index, auto access)
+    template <typename Iterator, typename Accessor>
+    auto interpolateLinear(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -133,7 +135,8 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    static const auto cosineInterpolation = [](auto begin, auto end, auto index, auto access)
+    template <typename Iterator, typename Accessor>
+    auto interpolateCosine(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -145,7 +148,8 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    static const auto cubicInterpolation = [](auto begin, auto end, auto index, auto access)
+    template <typename Iterator, typename Accessor>
+    auto interpolateCubic(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -159,7 +163,8 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    static const auto catmullRomInterpolation = [](auto begin, auto end, auto index, auto access)
+    template <typename Iterator, typename Accessor>
+    auto interpolateCatmullRom(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -173,20 +178,19 @@ namespace math
     };
     
     //! Generate a lambda executing hermite interpolation
-    inline auto hermiteInterpolation(double tension = 0, double bias = 0)
+    template <typename Iterator, typename Accessor>
+    auto interpolateHermite(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access, double tension = 0, double bias = 0)
+        -> typename std::iterator_traits<Iterator>::value_type
     {
-        return [tension, bias](auto begin, auto end, auto index, auto access)
-        {
-            const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
-            const auto fraction = index - trunc;
-            
-            const auto x1 = access(begin, end, trunc - 1);
-            const auto x2 = access(begin, end, trunc);
-            const auto x3 = access(begin, end, trunc + 1);
-            const auto x4 = access(begin, end, trunc + 2);
-            
-            return interpolateHermite(fraction, x1, x2, x3, x4, tension, bias);
-        };
+        const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
+        const auto fraction = index - trunc;
+        
+        const auto x1 = access(begin, end, trunc - 1);
+        const auto x2 = access(begin, end, trunc);
+        const auto x3 = access(begin, end, trunc + 1);
+        const auto x4 = access(begin, end, trunc + 2);
+        
+        return interpolateHermite(fraction, x1, x2, x3, x4, tension, bias);
     }
 
 // --- Other functions using interpolation --- //
