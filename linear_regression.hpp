@@ -9,6 +9,7 @@
 #ifndef DSPERADOS_MATH_LINEAR_REGRESSION_HPP
 #define DSPERADOS_MATH_LINEAR_REGRESSION_HPP
 
+#include <cstddef>
 #include <iterator>
 #include <numeric>
 #include <vector>
@@ -16,44 +17,46 @@
 namespace math
 {
     //! Linear Coefficients
-    /*  Linear Coefficients express the form y = a + bx and contain the parameters a (y-intercept) and b (slope) */
+    /*  Linear Coefficients express the form y = a + bx and contain the parameters a (offset) and b (slope) */
     template <class T>
     struct LinearCoefficients
     {
-        LinearCoefficients(const T& a, const T& b) : a(a), b(b) {}
+        LinearCoefficients(const T& offset, const T& slope) : offset(offset), slope(slope) { }
         
         // Y-intercept
-        T a = 0;
+        T offset = 0;
         
         //! Slope
-        T b = 0;
+        T slope = 0;
     };
     
     //! Find the coefficients for a linear curve that best fit the data
     template <class Iterator>
     LinearCoefficients<typename Iterator::value_type> regressLinear(Iterator beginX, Iterator endX, Iterator beginY, Iterator endY)
     {
+        const auto zero = typename Iterator::value_type(0);
+        
         // Number of data points
-        auto N = std::distance(beginX, endX);
+        const auto N = std::distance(beginX, endX);
         
         // Sum of x
-        auto sumX = std::accumulate(beginX, endX, 0);
+        const auto sumX = std::accumulate(beginX, endX, zero);
         
         // Sum of y
-        auto sumY = std::accumulate(beginY, endY, 0);
+        const auto sumY = std::accumulate(beginY, endY, zero);
         
         // Sum of x * y
-        size_t i = 0;
-        auto sumXY = std::accumulate(beginX, endX, 0, [&](const auto& sum, const auto& value){ return sum + (value * *(beginY + i++)); });
+        std::size_t i = 0;
+        const auto sumXY = std::accumulate(beginX, endX, zero, [&](const auto& sum, const auto& value){ return sum + (value * *(beginY + i++)); });
         
         // Sum of x^2
-        auto sumX2 = std::accumulate(beginX, endX, 0, [](const auto& sum, const auto& value){ return sum + (value * value); });
+        const auto sumX2 = std::accumulate(beginX, endX, zero, [](const auto& sum, const auto& value){ return sum + (value * value); });
         
         // Compute the a (y-intercept) and b (slope) coefficients
-        auto a = static_cast<typename Iterator::value_type>(((sumY * sumX2) - (sumX * sumXY)) / ((N * sumX2) - (sumX * sumX)));
-        auto b = static_cast<typename Iterator::value_type>(((N * sumXY) - (sumX * sumY)) / ((N * sumX2) - (sumX * sumX)));
+        auto offset = static_cast<typename Iterator::value_type>(((sumY * sumX2) - (sumX * sumXY)) / ((N * sumX2) - (sumX * sumX)));
+        auto slope = static_cast<typename Iterator::value_type>(((N * sumXY) - (sumX * sumY)) / ((N * sumX2) - (sumX * sumX)));
         
-        return {a, b};
+        return {offset, slope};
     }
     
     //! Find the coefficients for a linear curve that best fit the data
@@ -62,7 +65,7 @@ namespace math
     {
         // Create an ascending vector from 0 for the x-points
         std::vector<float> x(std::distance(beginY, endY));
-        std::iota(x.begin(), x.end(), 0);
+        std::iota(x.begin(), x.end(), typename Iterator::value_type(0));
         
         // Compute regression
         return regressLinear(x.begin(), x.end(), beginY, endY);
