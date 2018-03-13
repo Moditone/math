@@ -2,12 +2,12 @@
 //  access.hpp
 //  Math
 //
-//  Copyright © 2015-2017 Dsperados (info@dsperados.com). All rights reserved.
+//  Copyright © 2015-2018 Moditone (info@moditone.com). All rights reserved.
 //  Licensed under the BSD 3-clause license.
 //
 
-#ifndef DSPERADOS_MATH_ACCESS_HPP
-#define DSPERADOS_MATH_ACCESS_HPP
+#ifndef MODITONE_MATH_ACCESS_HPP
+#define MODITONE_MATH_ACCESS_HPP
 
 #include <cstddef>
 #include <functional>

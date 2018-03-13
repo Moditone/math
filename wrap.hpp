@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef DSPERADOS_MATH_WRAP_HPP
-#define DSPERADOS_MATH_WRAP_HPP
+#ifndef MODITONE_MATH_WRAP_HPP
+#define MODITONE_MATH_WRAP_HPP
 
 #include <algorithm>
 #include <iterator>
@@ -84,4 +84,4 @@ namespace math
     }
 }
 
-#endif /* DSPERADOS_MATH_WRAP_HPP */
+#endif /* MODITONE_MATH_WRAP_HPP */

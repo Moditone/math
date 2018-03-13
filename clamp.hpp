@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef DSPERADOS_MATH_CLAMP_HPP
-#define DSPERADOS_MATH_CLAMP_HPP
+#ifndef MODITONE_MATH_CLAMP_HPP
+#define MODITONE_MATH_CLAMP_HPP
 
 #include <stdexcept>
 #include <type_traits>
@@ -50,4 +50,4 @@ namespace math
     }
 }
 
-#endif /* DSPERADOS_MATH_CLAMP_HPP */
+#endif /* MODITONE_MATH_CLAMP_HPP */
