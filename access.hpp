@@ -49,13 +49,15 @@ namespace math
     }
     
     //! Lambda clamping index when accessing outside of range
-    static const auto clampAccess = [](auto begin, auto end, std::ptrdiff_t index) -> typename std::iterator_traits<decltype(begin)>::reference
+	template <typename Iterator>
+    auto clampAccess(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
     {
         return *std::next(begin, clamp<std::ptrdiff_t>(index, 0, std::distance(begin, end) - 1));
     };
     
     //! Lambda wrapping index when accessing outside of range
-    static const auto wrapAccess = [](auto begin, auto end, std::ptrdiff_t index) -> typename std::iterator_traits<decltype(begin)>::reference
+	template <typename Iterator>
+    auto wrapAccess(Iterator begin, Iterator end, std::ptrdiff_t index) -> typename std::iterator_traits<Iterator>::reference
     {
         return *std::next(begin, wrap<std::ptrdiff_t>(index, std::distance(begin, end)));
     };
