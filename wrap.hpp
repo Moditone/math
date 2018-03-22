@@ -16,6 +16,13 @@
 
 namespace math
 {
+    //! Wrap a value by subtracting its truncated value
+    template <typename T>
+    constexpr T wrapTruncate(const T& x) noexcept
+    {
+        return x - static_cast<int>(x);
+    }
+    
     //! Wrap a number within a given range
     template <typename T>
     std::enable_if_t<!std::is_integral<T>::value || std::is_signed<T>::value, T> wrap(T value, const T& min, const T& max)
