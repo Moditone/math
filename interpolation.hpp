@@ -109,8 +109,8 @@ namespace math
 // --- Interpolation lambda's --- //
     
     //! Lambda executing nearest interpolation
-    template <typename Iterator, typename Accessor>
-    auto interpolateNearest(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
+    template <typename Iterator, typename Index, typename Accessor>
+    auto interpolateNearest(Iterator begin, Iterator end, Index index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -122,8 +122,8 @@ namespace math
     };
     
     //! Lambda executing linear interpolation
-    template <typename Iterator, typename Accessor>
-    auto interpolateLinear(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
+    template <typename Iterator, typename Index, typename Accessor>
+    auto interpolateLinear(Iterator begin, Iterator end, Index index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -135,8 +135,8 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    template <typename Iterator, typename Accessor>
-    auto interpolateCosine(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
+    template <typename Iterator, typename Index, typename Accessor>
+    auto interpolateCosine(Iterator begin, Iterator end, Index index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -148,8 +148,8 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    template <typename Iterator, typename Accessor>
-    auto interpolateCubic(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
+    template <typename Iterator, typename Index, typename Accessor>
+    auto interpolateCubic(Iterator begin, Iterator end, Index index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -163,8 +163,8 @@ namespace math
     };
     
     //! Lambda executing cosine interpolation
-    template <typename Iterator, typename Accessor>
-    auto interpolateCatmullRom(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
+    template <typename Iterator, typename Index, typename Accessor>
+    auto interpolateCatmullRom(Iterator begin, Iterator end, Index index, Accessor access) -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
         const auto fraction = index - trunc;
@@ -178,8 +178,8 @@ namespace math
     };
     
     //! Generate a lambda executing hermite interpolation
-    template <typename Iterator, typename Accessor>
-    auto interpolateHermite(Iterator begin, Iterator end, std::ptrdiff_t index, Accessor access, double tension = 0, double bias = 0)
+    template <typename Iterator, typename Index, typename Accessor>
+    auto interpolateHermite(Iterator begin, Iterator end, Index index, Accessor access, double tension = 0, double bias = 0)
         -> typename std::iterator_traits<Iterator>::value_type
     {
         const auto trunc = static_cast<std::ptrdiff_t>(std::floor(index));
