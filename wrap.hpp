@@ -20,7 +20,10 @@ namespace math
     template <typename T>
     constexpr T wrapTruncate(const T& x) noexcept
     {
-        return x - static_cast<int>(x);
+        if (x < 0)
+            return x - static_cast<int>(x) + 1;
+        else
+            return x - static_cast<int>(x);
     }
     
     //! Wrap a number within a given range
