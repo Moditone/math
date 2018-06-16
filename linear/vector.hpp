@@ -6,8 +6,7 @@
 //  Licensed under the BSD 3-clause license.
 //
 
-#ifndef MATH_LINEAR_VECTOR_HPP
-#define MATH_LINEAR_VECTOR_HPP
+#pragma once
 
 #include <algorithm>
 #include <cassert>
@@ -26,6 +25,9 @@ namespace math
     class Vector
     {
     public:
+        
+        using value_type = T;
+        
     	Vector()
         {
             std::fill_n(data, N, T(0));
@@ -263,6 +265,9 @@ namespace math
     class Vector<T, 2>
     {
 	public:
+        
+        using value_type = T;
+        
     	Vector() = default;
 
         template <typename T2>
@@ -401,6 +406,9 @@ namespace math
     class Vector<T, 3>
     {
 	public:
+        
+        using value_type = T;
+        
     	Vector() = default;
 
         template <typename T2>
@@ -552,6 +560,9 @@ namespace math
     class Vector<T, 4>
     {
 	public:
+        
+        using value_type = T;
+        
     	Vector() = default;
 
         template <typename T2>
@@ -690,5 +701,3 @@ namespace math
     template <typename T>
     using Vector4 = Vector<T, 4>;
 }
-
-#endif /* Vector_h */
