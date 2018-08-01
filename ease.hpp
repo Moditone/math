@@ -66,6 +66,18 @@ namespace math
     inline auto easeExponentialInOut(double exponent) { return easeInOut(easeExponentialIn(exponent)); }
     inline auto easeExponentialOutIn(double exponent) { return easeInOut(easeExponentialOut(exponent)); }
     
+    /* Exponential given a middle value
+     * 0.5^x = y. Given y, solve x
+     * 0.5^x = 0.5^log0.5(y)
+     * x = log0.5(y)
+     * x = log10(y) / log10(0.5)
+     */
+    inline auto easeExponentialForCenterIn(double middleValue) { double exponent = std::log10(middleValue) / -0.3010299957; return [=](const auto x){ return std::pow(x, exponent); }; }
+    inline auto easeExponentialForCenterOut(double exponent) { return easeInvert(easeExponentialForCenterIn(exponent)); }
+    inline auto easeExponentialForCenterInOut(double exponent) { return easeInOut(easeExponentialForCenterIn(exponent)); }
+    inline auto easeExponentialForCenterOutIn(double exponent) { return easeInOut(easeExponentialForCenterOut(exponent)); }
+    
+    
     // Circular
     static const auto easeCircularIn = [](const auto x) { return 1 - std::sqrt(1 - (x * x)); };
     static const auto easeCircularOut = easeInvert(easeCircularIn);

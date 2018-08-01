@@ -19,10 +19,38 @@ namespace math
     //! Linear Coefficients
     /*  Linear Coefficients express the form y = a + bx and contain the parameters a (offset) and b (slope) */
     template <class T>
-    struct LinearCoefficients
+    class LinearCoefficients
     {
-        LinearCoefficients(const T& offset, const T& slope) : offset(offset), slope(slope) { }
+    public:
+        LinearCoefficients(T offset, T slope) :
+        offset(offset),
+        slope(slope)
+        { }
         
+        LinearCoefficients(T slope, T x1, T y1) :
+        slope(slope)
+        {
+            // slope-point forumla: Y - y1 = slope(X - x1)
+            offset = (slope * -x1) + y1;
+        }
+        
+        LinearCoefficients(T x1, T y1, T x2, T y2)
+        {
+            slope = computeSlope(x1, y1, x2, y2);
+            offset = (slope * -x1) + y1;
+        }
+        
+        static T computeSlope(T x1, T y1, T x2, T y2)
+        {
+            return (y2 - y1) / (x2 - x1);
+        }
+        
+        auto formLinearFunctionFromCoeffcients()
+        {
+            return [=](T x){ return offset + slope * x; };
+        }
+        
+    public:
         // Y-intercept
         T offset = 0;
         
