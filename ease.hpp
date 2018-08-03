@@ -77,6 +77,8 @@ namespace math
     inline auto easeExponentialForCenterInOut(double exponent) { return easeInOut(easeExponentialForCenterIn(exponent)); }
     inline auto easeExponentialForCenterOutIn(double exponent) { return easeInOut(easeExponentialForCenterOut(exponent)); }
     
+    // Natural log
+    inline auto easeNatrualLogIn(double factor) { return [=](const auto x){ return (1 - exp(-x * factor)) / (1 - exp(-factor)); }; }
     
     // Circular
     static const auto easeCircularIn = [](const auto x) { return 1 - std::sqrt(1 - (x * x)); };
