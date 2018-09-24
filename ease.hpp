@@ -61,10 +61,10 @@ namespace math
     static const auto easeQuinticInOut = easeInOut(easeQuinticIn);
     static const auto easeQuinticOutIn = easeInOut(easeQuinticOut);
 
-    inline auto easeExponentialIn(double exponent) { return [=](const auto x){ return std::pow(x, exponent); }; }
-    inline auto easeExponentialOut(double exponent) { return easeInvert(easeExponentialIn(exponent)); }
-    inline auto easeExponentialInOut(double exponent) { return easeInOut(easeExponentialIn(exponent)); }
-    inline auto easeExponentialOutIn(double exponent) { return easeInOut(easeExponentialOut(exponent)); }
+    static const auto easeExponentialIn(double exponent) { return [=](const auto x){ return std::pow(x, exponent); }; }
+    static const auto easeExponentialOut(double exponent) { return easeInvert(easeExponentialIn(exponent)); }
+    static const auto easeExponentialInOut(double exponent) { return easeInOut(easeExponentialIn(exponent)); }
+    static const auto easeExponentialOutIn(double exponent) { return easeInOut(easeExponentialOut(exponent)); }
     
     /* Exponential given a middle value
      * 0.5^x = y. Given y, solve x
@@ -72,13 +72,16 @@ namespace math
      * x = log0.5(y)
      * x = log10(y) / log10(0.5)
      */
-    inline auto easeExponentialForCenterIn(double middleValue) { double exponent = std::log10(middleValue) / -0.3010299957; return [=](const auto x){ return std::pow(x, exponent); }; }
-    inline auto easeExponentialForCenterOut(double exponent) { return easeInvert(easeExponentialForCenterIn(exponent)); }
-    inline auto easeExponentialForCenterInOut(double exponent) { return easeInOut(easeExponentialForCenterIn(exponent)); }
-    inline auto easeExponentialForCenterOutIn(double exponent) { return easeInOut(easeExponentialForCenterOut(exponent)); }
+    static const auto easeExponentialForCenterIn(double middleValue) { double exponent = std::log10(middleValue) / -0.3010299957; return [=](const auto x){ return std::pow(x, exponent); }; }
+    static const auto easeExponentialForCenterOut(double middleValue) { return easeInvert(easeExponentialForCenterIn(middleValue)); }
+    static const auto easeExponentialForCenterInOut(double middleValue) { return easeInOut(easeExponentialForCenterIn(middleValue)); }
+    static const auto easeExponentialForCenterOutIn(double middleValue) { return easeInOut(easeExponentialForCenterOut(middleValue)); }
     
-    // Natural log
-    inline auto easeNatrualLogIn(double factor) { return [=](const auto x){ return (1 - exp(-x * factor)) / (1 - exp(-factor)); }; }
+    // 1 - e^-x normalised to satisfy x = 1 -> y = 1
+    static const auto easeNaturalExponentIn(double exponent) { return [=](const auto x){ return (1.0 - std::exp(-x * exponent)) / (1.0 - std::exp(-exponent)); }; }
+    static const auto easeNaturalExponentOut(double exponent) { return easeInvert(easeNaturalExponentIn(exponent)); }
+    static const auto easeNaturalExponentInOut(double exponent) { return easeInOut(easeNaturalExponentIn(exponent)); }
+    static const auto easeNaturalExponentOutIn(double exponent) { return easeInOut(easeNaturalExponentOut(exponent)); }
     
     // Circular
     static const auto easeCircularIn = [](const auto x) { return 1 - std::sqrt(1 - (x * x)); };
