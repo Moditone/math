@@ -45,30 +45,11 @@ namespace math
     static const auto easeLinear = [](const auto x){ return x; };
     
     // Exponential forms
-    static const auto easeQuadraticIn = [](const auto x) { return x * x; };
-    static const auto easeQuadraticOut = invertEase(easeQuadraticIn);
-    static const auto easeQuadraticInOut = easeInOut(easeQuadraticIn);
-    static const auto easeQuadraticOutIn = easeInOut(easeQuadraticOut);
-    
-    static const auto easeCubicIn = [](const auto x) { return x * x * x; };
-    static const auto easeCubicOut = invertEase(easeCubicIn);
-    static const auto easeCubicInOut = easeInOut(easeCubicIn);
-    static const auto easeCubicOutIn = easeInOut(easeCubicOut);
-    
-    static const auto easeQuarticIn = [](const auto x) { return x * x * x * x; };
-    static const auto easeQuarticOut = invertEase(easeQuarticIn);
-    static const auto easeQuarticInOut = easeInOut(easeQuarticIn);
-    static const auto easeQuarticOutIn = easeInOut(easeQuarticOut);
-    
-    static const auto easeQuinticIn = [](const auto x) { return x * x * x * x * x; };
-    static const auto easeQuinticOut = invertEase(easeQuinticIn);
-    static const auto easeQuinticInOut = easeInOut(easeQuinticIn);
-    static const auto easeQuinticOutIn = easeInOut(easeQuinticOut);
-
-    inline auto easeExponentialIn(double exponent) { return [=](const auto x){ return std::pow(x, exponent); }; }
-    inline auto easeExponentialOut(double exponent) { return invertEase(easeExponentialIn(exponent)); }
-    inline auto easeExponentialInOut(double exponent) { return easeInOut(easeExponentialIn(exponent)); }
-    inline auto easeExponentialOutIn(double exponent) { return easeInOut(easeExponentialOut(exponent)); }
+    static const auto easeQuadratic = [](const auto x) { return x * x; };
+    static const auto easeCubic = [](const auto x) { return x * x * x; };
+    static const auto easeQuartic = [](const auto x) { return x * x * x * x; };
+    static const auto easeQuintic = [](const auto x) { return x * x * x * x * x; };
+    inline auto easeExponential(double exponent) { return [=](const auto x){ return std::pow(x, exponent); }; }
     
     /* Exponential given a middle value
      * 0.5^x = y. Given y, solve x
@@ -76,37 +57,22 @@ namespace math
      * x = log0.5(y)
      * x = log10(y) / log10(0.5)
      */
-    inline auto easeExponentialForCenterIn(double middleValue) { double exponent = std::log10(middleValue) / -0.3010299957; return [=](const auto x){ return std::pow(x, exponent); }; }
-    inline auto easeExponentialForCenterOut(double middleValue) { return invertEase(easeExponentialForCenterIn(middleValue)); }
-    inline auto easeExponentialForCenterInOut(double middleValue) { return easeInOut(easeExponentialForCenterIn(middleValue)); }
-    inline auto easeExponentialForCenterOutIn(double middleValue) { return easeInOut(easeExponentialForCenterOut(middleValue)); }
+    inline auto easeExponentialForCenter(double middleValue) { double exponent = std::log10(middleValue) / -0.3010299957; return [=](const auto x){ return std::pow(x, exponent); }; }
     
     // 1 - e^-x normalised to satisfy x = 1 -> y = 1
-    inline auto easeNaturalExponentIn(double exponent) { return [=](const auto x){ return (1.0 - std::exp(-x * exponent)) / (1.0 - std::exp(-exponent)); }; }
-    inline auto easeNaturalExponentOut(double exponent) { return invertEase(easeNaturalExponentIn(exponent)); }
-    inline auto easeNaturalExponentInOut(double exponent) { return easeInOut(easeNaturalExponentIn(exponent)); }
-    inline auto easeNaturalExponentOutIn(double exponent) { return easeInOut(easeNaturalExponentOut(exponent)); }
+    inline auto easeNaturalExponent(double exponent) { return [=](const auto x){ return (1.0 - std::exp(-x * exponent)) / (1.0 - std::exp(-exponent)); }; }
     
     // Sqrt
-    static const auto easeSqrtIn = [](const auto x) { return std::sqrt(x); };
-    static const auto easeSqrtOut = invertEase(easeSqrtIn);
-    static const auto easeSqrtInOut = easeInOut(easeSqrtIn);
-    static const auto easeSqrtOutIn = easeInOut(easeSqrtOut);
+    static const auto easeSqrt = [](const auto x) { return std::sqrt(x); };
     
     // Circular
-    static const auto easeCircularIn = [](const auto x) { return 1 - std::sqrt(1 - (x * x)); };
-    static const auto easeCircularOut = invertEase(easeCircularIn);
-    static const auto easeCircularInOut = easeInOut(easeCircularIn);
-    static const auto easeCircularOutIn = easeInOut(easeCircularOut);
+    static const auto easeCircular = [](const auto x) { return 1 - std::sqrt(1 - (x * x)); };
     
     // Sine/cosine
-    static const auto easeSineOut = [](const auto x){ return std::sin(x * HALF_PI<decltype(x)>); };
-    static const auto easeSineIn = invertEase(easeSineOut);
-    static const auto easeSineInOut = easeInOut(easeSineIn);
-    static const auto easeSineOutIn = easeInOut(easeSineOut);
+    static const auto easeSine = [](const auto x){ return std::sin(x * HALF_PI<decltype(x)>); };
     
     // Elastic
-    inline auto easeElasticOut(double p)
+    inline auto easeElastic(double p)
     {
         return [=](const auto x)
         {
@@ -114,15 +80,8 @@ namespace math
         };
     }
     
-    inline auto easeElasticIn(double p) { return invertEase(easeElasticOut(p)); }
-    inline auto easeElasticInOut(double p) { return easeInOut(easeElasticIn(p)); }
-    inline auto easeElasticOutIn(double p) { return easeInOut(easeElasticOut(p)); }
-    
     // Back
-    inline auto easeBackIn(double s) { return [=](const auto x) { return x * x * ((s + 1) * x - s); }; }
-    inline auto easeBackOut(double p) { return invertEase(easeBackIn(p)); }
-    inline auto easeBackInOut(double p) { return easeInOut(easeBackIn(p)); }
-    inline auto easeBackOutIn(double p) { return easeInOut(easeBackOut(p)); }
+    inline auto easeBack(double s) { return [=](const auto x) { return x * x * ((s + 1) * x - s); }; }
 }
 
 #endif /* MATH_EASE_HPP */
