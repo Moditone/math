@@ -87,6 +87,12 @@ namespace math
     inline auto easeNaturalExponentInOut(double exponent) { return easeInOut(easeNaturalExponentIn(exponent)); }
     inline auto easeNaturalExponentOutIn(double exponent) { return easeInOut(easeNaturalExponentOut(exponent)); }
     
+    // Sqrt
+    static const auto easeSqrtIn = [](const auto x) { return std::sqrt(x); };
+    static const auto easeSqrtOut = invertEase(easeSqrtIn);
+    static const auto easeSqrtInOut = easeInOut(easeSqrtIn);
+    static const auto easeSqrtOutIn = easeInOut(easeSqrtOut);
+    
     // Circular
     static const auto easeCircularIn = [](const auto x) { return 1 - std::sqrt(1 - (x * x)); };
     static const auto easeCircularOut = invertEase(easeCircularIn);
