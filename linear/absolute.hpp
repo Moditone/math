@@ -17,13 +17,22 @@ namespace math
 {
 	//! Compute the absolute value of a vector
     template <typename T, std::size_t N>
-    auto abs(const Vector<T, N>& vector)
+    auto absolute(const Vector<T, N>& vector)
     {
         Vector<T, N> result;
         for(auto i = 0; i < N; i++)
             result[i] = std::fabs(vector[i]);
         
         return result;
+    }
+}
+
+namespace std
+{
+    template <typename T, std::size_t N>
+    auto fabs(const math::Vector<T, N>& vector)
+    {
+        return math::absolute(vector);
     }
 }
 
