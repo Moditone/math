@@ -25,12 +25,13 @@ namespace math
     class Vector
     {
     public:
-        
         using value_type = T;
         
-    	Vector()
+    public:
+        Vector() :
+            Vector(T{0})
         {
-            std::fill_n(data, N, T(0));
+            
         }
 
         template <typename T2>
@@ -44,7 +45,8 @@ namespace math
             std::fill_n(data + N - left, left, T(0));
     	}
 
-        Vector(const T& value)
+        template <typename T2>
+        Vector(const T2& value)
         {
             std::fill_n(data.begin(), N, value);
         }

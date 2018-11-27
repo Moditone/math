@@ -9,7 +9,7 @@
 #ifndef MATH_LINEAR_DOT_HPP
 #define MATH_LINEAR_DOT_HPP
 
-#include <stdio.h>
+#include <type_traits>
 
 #include "vector.hpp"
 
