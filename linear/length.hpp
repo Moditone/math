@@ -16,6 +16,12 @@
 
 namespace math
 {
+    template <typename T>
+    T length(const T& scalar)
+    {
+        return scalar;
+    }
+    
     template <typename T, std::size_t N>
     auto length(const Vector<T, N>& vector)
     {
