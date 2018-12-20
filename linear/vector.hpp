@@ -397,10 +397,10 @@ namespace math
     template <typename T>
     using Vector2 = Vector<T, 2>;
 
-    template <typename T> const Vector2<T> Vector2<T>::UP(0, 1);
-    template <typename T> const Vector2<T> Vector2<T>::DOWN(0, -1);
-    template <typename T> const Vector2<T> Vector2<T>::LEFT(-1, 0);
-    template <typename T> const Vector2<T> Vector2<T>::RIGHT(1, 0);
+    template <typename T> const Vector<T, 2> Vector<T, 2>::UP(0, 1);
+    template <typename T> const Vector<T, 2> Vector<T, 2>::DOWN(0, -1);
+    template <typename T> const Vector<T, 2> Vector<T, 2>::LEFT(-1, 0);
+    template <typename T> const Vector<T, 2> Vector<T, 2>::RIGHT(1, 0);
 
 // --- Vector3 --- //
 
@@ -549,12 +549,12 @@ namespace math
     template <typename T>
     using Vector3 = Vector<T, 3>;
 
-    template <typename T> const Vector3<T> Vector3<T>::UP(0, 1, 0);
-    template <typename T> const Vector3<T> Vector3<T>::DOWN(0, -1, 0);
-    template <typename T> const Vector3<T> Vector3<T>::LEFT(-1, 0, 0);
-    template <typename T> const Vector3<T> Vector3<T>::RIGHT(1, 0, 0);
-    template <typename T> const Vector3<T> Vector3<T>::FORWARD(0, 0, 1);
-    template <typename T> const Vector3<T> Vector3<T>::BACKWARD(0, 0, -1);
+    template <typename T> const Vector<T, 3> Vector<T, 3>::UP(0, 1, 0);
+    template <typename T> const Vector<T, 3> Vector<T, 3>::DOWN(0, -1, 0);
+    template <typename T> const Vector<T, 3> Vector<T, 3>::LEFT(-1, 0, 0);
+    template <typename T> const Vector<T, 3> Vector<T, 3>::RIGHT(1, 0, 0);
+    template <typename T> const Vector<T, 3> Vector<T, 3>::FORWARD(0, 0, 1);
+    template <typename T> const Vector<T, 3> Vector<T, 3>::BACKWARD(0, 0, -1);
 
 // --- Vector4 --- //
 
