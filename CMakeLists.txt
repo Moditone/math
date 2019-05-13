@@ -20,7 +20,7 @@ include_directories(${INCLUDEFOLDER})
 set(HEADERS access.hpp analysis.hpp bezier.hpp clamp.hpp constants.hpp ease.hpp interleave.hpp interpolation.hpp linear_regression.hpp normalize.hpp random.hpp sigmoid.hpp sinusoid.hpp spline.hpp statistics.hpp power_of_2.hpp wrap.hpp)
 source_group(\\ FILES ${HEADERS})
 
-set(LINEAR_HEADERS linear/absolute.hpp linear/cross.hpp linear/determinant.hpp linear/diagonal.hpp linear/dot.hpp linear/inverse.hpp linear/length.hpp linear/matrix.hpp linear/max.hpp linear/modulo.hpp linear/normalize.hpp linear/random.hpp linear/power.hpp linear/trace.hpp linear/transpose.hpp linear/vector.hpp)
+set(LINEAR_HEADERS linear/absolute.hpp linear/cross.hpp linear/determinant.hpp linear/diagonal.hpp linear/dot.hpp linear/exp.hpp linear/inverse.hpp linear/length.hpp linear/log.hpp linear/matrix.hpp linear/max.hpp linear/modulo.hpp linear/normalize.hpp linear/random.hpp linear/rotate.hpp linear/power.hpp linear/scale.hpp linear/trace.hpp linear/translate.hpp linear/transpose.hpp linear/vector.hpp)
 source_group(\\linear FILES ${LINEAR_HEADERS})
 
 set(GEO_HEADERS geometry/bin_packing_space.hpp geometry/circular.hpp geometry/containment.hpp geometry/expansion.hpp geometry/intersection.hpp geometry/rectangular.hpp geometry/reduction.hpp geometry/size.hpp geometry/triangular.hpp)

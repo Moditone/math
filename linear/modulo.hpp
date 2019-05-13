@@ -1,5 +1,5 @@
 //
-//  fmod.hpp
+//  modulo.hpp
 //  Math
 //
 //  Copyright © 2015-2017 Dsperados (info@dsperados.com). All rights reserved.
